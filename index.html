@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Mad Libs Generator — Write Posts Like a Thought Leader</title>
+  <meta name="description" content="Generate cringe-perfect LinkedIn posts in seconds. Pick a template, fill in the blanks, and post with confidence.">
+  <meta property="og:title" content="LinkedIn Mad Libs Generator">
+  <meta property="og:description" content="Generate cringe-perfect LinkedIn posts in seconds. Pick a template, fill in the blanks, copy, and post.">
+  <meta property="og:url" content="https://linkedinmadlibs.com">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="LinkedIn Mad Libs Generator">
+  <meta name="twitter:description" content="Generate cringe-perfect LinkedIn posts in seconds.">
+  <link rel="canonical" href="https://linkedinmadlibs.com">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1605007629193380" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple-50: #EEEDFE;
+      --purple-600: #534AB7;
+      --purple-700: #3D379A;
+      --gray-50: #F8F8F7;
+      --gray-100: #EFEFED;
+      --gray-200: #DDDDD9;
+      --gray-500: #888780;
+      --gray-700: #444441;
+      --gray-900: #1A1A19;
+      --teal-600: #0F6E56;
+      --teal-50: #E1F5EE;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: var(--purple-600); }
+
+    /* Layout */
+    .site-header {
+      background: #fff;
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 1rem;
+    }
+    .header-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 1rem 0;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .site-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -0.01em;
+    }
+    .site-tagline {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+    }
+
+    .ad-banner {
+      background: #fff;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 90px;
+      padding: 8px 0;
+    }
+
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .intro {
+      margin-bottom: 2rem;
+    }
+    .intro h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+    .intro p {
+      color: var(--gray-500);
+      font-size: 0.95rem;
+    }
+
+    /* Step labels */
+    .step-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Template grid */
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+    .tpl-btn {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--gray-700);
+      font-family: inherit;
+      transition: border-color 0.12s, box-shadow 0.12s;
+      line-height: 1.4;
+    }
+    .tpl-btn:hover {
+      border-color: var(--purple-600);
+      box-shadow: 0 0 0 3px var(--purple-50);
+    }
+    .tpl-btn.active {
+      border-color: var(--purple-600);
+      background: var(--purple-50);
+      color: var(--purple-600);
+      font-weight: 500;
+      box-shadow: 0 0 0 3px var(--purple-50);
+    }
+
+    /* Fields */
+    .fields-section {
+      display: none;
+      margin-bottom: 1.5rem;
+    }
+    .fields-section.visible { display: block; }
+    .fields-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .field-row label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 5px;
+    }
+    .field-row input {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--gray-900);
+      outline: none;
+      transition: border-color 0.12s, box-shadow 0.12s;
+    }
+    .field-row input:focus {
+      border-color: var(--purple-600);
+      box-shadow: 0 0 0 3px var(--purple-50);
+    }
+    .field-row input::placeholder { color: var(--gray-200); }
+
+    /* Ad mid */
+    .ad-mid {
+      margin: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100px;
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    /* Preview */
+    .preview-section {
+      display: none;
+    }
+    .preview-section.visible { display: block; }
+    .preview-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      margin-bottom: 1rem;
+      min-height: 120px;
+    }
+    .blank {
+      font-weight: 600;
+      color: var(--purple-600);
+      background: var(--purple-50);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.12s, border-color 0.12s;
+      border: 1px solid var(--gray-200);
+      background: #fff;
+      color: var(--gray-700);
+    }
+    .btn:hover { background: var(--gray-100); }
+    .btn-primary {
+      background: var(--purple-600);
+      color: #fff;
+      border-color: var(--purple-600);
+    }
+    .btn-primary:hover { background: var(--purple-700); border-color: var(--purple-700); }
+    .btn.copied { color: var(--teal-600); border-color: var(--teal-600); background: var(--teal-50); }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--gray-200);
+      margin: 1.75rem 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.8rem;
+      color: var(--gray-500);
+      border-top: 1px solid var(--gray-200);
+    }
+
+    @media (max-width: 480px) {
+      .intro h1 { font-size: 1.3rem; }
+      .template-grid { grid-template-columns: 1fr; }
+      .fields-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <span class="site-title">LinkedIn Mad Libs</span>
+    <span class="site-tagline">thought leadership, on demand</span>
+  </div>
+</header>
+
+<!-- Top leaderboard ad -->
+<div class="ad-banner">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-1605007629193380"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<main>
+  <div class="intro">
+    <h1>LinkedIn Post Mad Libs Generator</h1>
+    <p>Pick a template, fill in the blanks, copy your post. Thought leadership takes 30 seconds.</p>
+  </div>
+
+  <div class="step-label">Step 1 — Pick a template</div>
+  <div class="template-grid" id="tpl-grid"></div>
+
+  <div class="fields-section" id="fields-section">
+    <div class="step-label">Step 2 — Fill in the blanks</div>
+    <div class="fields-grid" id="fields"></div>
+  </div>
+
+  <!-- Mid-page ad (shown after template selected) -->
+  <div class="ad-mid" id="ad-mid" style="display:none">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1605007629193380"
+         data-ad-slot="auto"
+         data-ad-format="rectangle"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="preview-section" id="preview-section">
+    <hr class="divider">
+    <div class="step-label">Your post</div>
+    <div class="preview-card" id="preview"></div>
+    <div class="actions">
+      <button class="btn btn-primary" id="copy-btn" onclick="copyPost()">Copy post</button>
+      <button class="btn" onclick="resetAll()">Start over</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2026 LinkedInMadLibs.com &mdash; not affiliated with LinkedIn.
+</footer>
+
+<script>
+const templates = [
+  {
+    label: '"The most effective..."',
+    fields: [
+      { id: 'trait', label: 'A leadership trait', placeholder: 'e.g. habit' },
+      { id: 'role', label: 'Your role', placeholder: 'e.g. founder' },
+      { id: 'jargon1', label: 'Business jargon #1', placeholder: 'e.g. alignment' },
+      { id: 'jargon2', label: 'Business jargon #2', placeholder: 'e.g. leverage' },
+      { id: 'buzzword', label: 'Inspirational buzzword', placeholder: 'e.g. impact' },
+    ],
+    render: (v) => `The most effective ${v.trait||'[TRAIT]'} I've seen in a ${v.role||'[ROLE]'} isn't what most people think.\n\nIt's not about ${v.jargon1||'[JARGON 1]'}.\nIt's not about ${v.jargon2||'[JARGON 2]'}.\n\nIt's about ${v.buzzword||'[BUZZWORD]'}.\n\nAnd the best ones do it every single day.`
+  },
+  {
+    label: '"This event..."',
+    fields: [
+      { id: 'event', label: 'Event name', placeholder: 'e.g. Summit 2025' },
+      { id: 'topic', label: 'Vague topic discussed', placeholder: 'e.g. the future of work' },
+      { id: 'takeaway', label: 'Humble takeaway', placeholder: 'e.g. so much to learn' },
+      { id: 'cta', label: 'Call to action', placeholder: 'e.g. drop a comment below' },
+    ],
+    render: (v) => `This event changed everything.\n\n${v.event||'[EVENT]'} brought together some of the sharpest minds in the industry to talk about ${v.topic||'[TOPIC]'}.\n\nI left the room with pages of notes and a reminder that there is ${v.takeaway||'[HUMBLE TAKEAWAY]'}.\n\nIf you were there, ${v.cta||'[CTA]'} — I'd love to connect.`
+  },
+  {
+    label: '"Please join me in congratulating..."',
+    fields: [
+      { id: 'name', label: "Person's name", placeholder: 'e.g. Alex Chen' },
+      { id: 'achievement', label: 'Their achievement', placeholder: 'e.g. new role at Google' },
+      { id: 'quality', label: 'Vague quality they have', placeholder: 'e.g. passion for impact' },
+      { id: 'org', label: 'Their new organization', placeholder: 'e.g. Google' },
+    ],
+    render: (v) => `Please join me in congratulating ${v.name||'[NAME]'} on ${v.achievement||'[ACHIEVEMENT]'}!\n\nI've had the privilege of watching ${v.name||'[NAME]'} grow and I can say with confidence that their ${v.quality||'[QUALITY]'} is truly remarkable.\n\n${v.org||'[ORG]'} is lucky to have them. Wishing you all the best on this exciting new chapter!`
+  },
+  {
+    label: '"We are proud to announce..."',
+    fields: [
+      { id: 'org', label: 'Your organization', placeholder: 'e.g. Acme Corp' },
+      { id: 'announcement', label: "The thing you're announcing", placeholder: 'e.g. our Series A' },
+      { id: 'mission', label: 'Your mission (vague)', placeholder: 'e.g. empowering humans' },
+      { id: 'investors', label: 'Impressive names to drop', placeholder: 'e.g. a16z, Sequoia' },
+    ],
+    render: (v) => `We are proud to announce that ${v.org||'[ORG]'} has ${v.announcement||'[ANNOUNCEMENT]'}.\n\nThis is a huge milestone in our journey to ${v.mission||'[MISSION]'} and we couldn't have done it without the support of ${v.investors||'[IMPRESSIVE NAMES]'}.\n\nThe best is yet to come. Stay tuned.`
+  },
+  {
+    label: '"So proud of our team at..."',
+    fields: [
+      { id: 'org', label: 'Your organization', placeholder: 'e.g. Acme Corp' },
+      { id: 'metric', label: 'Impressive metric', placeholder: 'e.g. 10x growth' },
+      { id: 'timeframe', label: 'Timeframe', placeholder: 'e.g. Q3' },
+      { id: 'secret', label: 'Your "secret"', placeholder: 'e.g. psychological safety' },
+    ],
+    render: (v) => `So proud of our team at ${v.org||'[ORG]'}.\n\nWe hit ${v.metric||'[METRIC]'} in ${v.timeframe||'[TIMEFRAME]'}. Not because we worked harder than everyone else. But because we worked differently.\n\nThe secret? ${v.secret||'[SECRET]'}.\n\nThank you to every single person who made this possible. You know who you are.`
+  },
+  {
+    label: '"I recently had the opportunity..."',
+    fields: [
+      { id: 'myOrg', label: 'My organization', placeholder: 'e.g. Smith & Partners' },
+      { id: 'kissup', label: 'Someone I want to kiss up to', placeholder: 'e.g. Jane Doe' },
+      { id: 'timeframe', label: 'Timeframe', placeholder: 'e.g. the last three years' },
+      { id: 'org', label: 'Their organization', placeholder: 'e.g. Y Combinator' },
+      { id: 'jargon', label: 'Business jargon insight', placeholder: 'e.g. velocity beats perfection' },
+      { id: 'term1', label: 'Business term', placeholder: 'e.g. unit economics' },
+      { id: 'term2', label: 'General business success term', placeholder: 'e.g. long-term vision' },
+    ],
+    render: (v) => `I recently had the opportunity to share insights about my practice at ${v.myOrg||'[MY ORG]'} and what I've learned from working alongside ${v.kissup||'[SOMEONE I WANT TO KISS UP TO]'} over the past ${v.timeframe||'[TIMEFRAME]'} with ${v.org||'[ORGANIZATION]'}.\n\nOne topic that came up repeatedly is that ${v.jargon||'[BUSINESS JARGON]'}. Founders are making fast-moving decisions with real business consequences, and my role is always to help them understand the ${v.term1||'[BUSINESS TERM]'} while keeping their ${v.term2||'[GENERAL BUSINESS SUCCESS TERM]'} in focus.`
+  }
+];
+
+let selected = null;
+let values = {};
+
+function selectTemplate(idx) {
+  selected = idx;
+  values = {};
+  document.querySelectorAll('.tpl-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  renderFields();
+  renderPreview();
+  document.getElementById('fields-section').classList.add('visible');
+  document.getElementById('preview-section').classList.add('visible');
+  document.getElementById('ad-mid').style.display = 'flex';
+  document.getElementById('copy-btn').textContent = 'Copy post';
+  document.getElementById('copy-btn').classList.remove('copied');
+}
+
+function renderFields() {
+  const container = document.getElementById('fields');
+  container.innerHTML = templates[selected].fields.map(f => `
+    <div class="field-row">
+      <label>${f.label}</label>
+      <input type="text" placeholder="${f.placeholder}" data-id="${f.id}" oninput="onInput(this)" autocomplete="off" />
+    </div>
+  `).join('');
+}
+
+function onInput(el) {
+  values[el.dataset.id] = el.value.trim();
+  renderPreview();
+}
+
+function renderPreview() {
+  const raw = templates[selected].render(values);
+  const html = raw
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/\[([^\]]+)\]/g, '<span class="blank">[$1]</span>')
+    .replace(/\n/g, '<br>');
+  document.getElementById('preview').innerHTML = html;
+}
+
+function copyPost() {
+  const text = templates[selected].render(values);
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy post';
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+
+function resetAll() {
+  selected = null;
+  values = {};
+  document.querySelectorAll('.tpl-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('fields-section').classList.remove('visible');
+  document.getElementById('preview-section').classList.remove('visible');
+  document.getElementById('ad-mid').style.display = 'none';
+  document.getElementById('fields').innerHTML = '';
+  document.getElementById('preview').innerHTML = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const grid = document.getElementById('tpl-grid');
+templates.forEach((t, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'tpl-btn';
+  btn.textContent = t.label;
+  btn.onclick = () => selectTemplate(i);
+  grid.appendChild(btn);
+});
+</script>
+</body>
+</html>

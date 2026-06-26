@@ -392,6 +392,17 @@ const templates = [
     render: (v) => `Everyone wants to ${v.hotThing||'[HOT THING]'}.\n\nAlmost nobody wants to do the work that comes before it.\n\n1. ${v.layer1||'[LAYER 1]'}\n\nThis is where the excitement is.\n${v.layer1desc||'[WHY PEOPLE LOVE IT]'}.\n\n2. ${v.layer2||'[LAYER 2]'}\n\nThis is where reality begins.\n${v.layer2desc||'[WHY IT MATTERS]'} takes far more effort than it looks.\n\n3. ${v.layer3||'[LAYER 3]'}\n\nThis is where most value is created.\n${v.layer3desc||'[WHY IT DETERMINES EVERYTHING]'} isn't exciting, but it determines everything that follows.\n\nThe irony?\n\nMost teams spend weeks debating ${v.irony1||'[WHAT TEAMS WASTE TIME ON]'}.\n\nAnd only hours discussing ${v.irony2||'[WHAT THEY SHOULD FOCUS ON]'}.\n\n${v.punchline1||'[CLOSING LINE 1]'}\n\n${v.punchline2||'[CLOSING LINE 2]'}`
   },
   {
+    label: '"Exciting news!..."',
+    fields: [
+      { id: 'org', label: 'Organization', placeholder: 'e.g. Acme Federal Solutions LLC' },
+      { id: 'contract', label: 'Lucrative contract', placeholder: 'e.g. a $50M IDIQ award' },
+      { id: 'vehicles', label: 'Contract vehicles no one cares about', placeholder: 'e.g. OASIS+, Alliant 3, CIO-SP4' },
+      { id: 'program', label: 'Award program', placeholder: 'e.g. governmentwide acquisition contract' },
+      { id: 'adjective', label: 'Superlative adjective', placeholder: 'e.g. mission-critical' },
+    ],
+    render: (v) => `Exciting news! ${v.org||'[ORGANIZATION]'} has been awarded ${v.contract||'[LUCRATIVE CONTRACT]'} for ${v.vehicles||'[LIST OF CONTRACT VEHICLES NO ONE CARES ABOUT EXCEPT FOR THEIR CAPACITY TO FUND A BMW PURCHASE]'}, joining an elite pool of awardees on one of the federal government's premier ${v.program||'[AWARD PROGRAM]'}.\n\nWe're proud to bring our proven track record supporting ${v.adjective||'[SUPERLATIVE ADJECTIVE]'} federal missions to even more agencies through this vehicle.`
+  },
+  {
     label: '"I recently had the opportunity..."',
     fields: [
       { id: 'myOrg', label: 'My organization', placeholder: 'e.g. Smith & Partners' },

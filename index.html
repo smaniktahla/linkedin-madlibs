@@ -366,7 +366,10 @@
   <div class="template-grid" id="tpl-grid"></div>
 
   <div class="fields-section" id="fields-section">
-    <div class="step-label">Step 2 — Fill in the blanks</div>
+    <div class="step-label" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <span>Step 2 — Fill in the blanks</span>
+      <button class="btn" id="autofill-btn" onclick="autoFill()" style="font-size:0.8rem;padding:0.3rem 0.8rem;">🎲 Create one for me</button>
+    </div>
     <div class="fields-grid" id="fields"></div>
   </div>
 
@@ -396,6 +399,7 @@
   &copy; 2026 <a href="https://ninjamonkey.dev" target="_blank" rel="noopener" style="color: inherit;">NinjaMonkey LLC</a> &mdash; not affiliated with LinkedIn. &nbsp;&middot;&nbsp; <a href="#" id="suggest-link" style="color: inherit;">Suggest a template</a>
 </footer>
 
+<script src="wordbank.js"></script>
 <script>
 const templates = [
   {
@@ -556,6 +560,23 @@ function resetAll() {
   document.getElementById('fields').innerHTML = '';
   document.getElementById('preview').innerHTML = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function autoFill() {
+  if (selected === null) return;
+  const inputs = document.querySelectorAll('#fields input');
+  inputs.forEach(input => {
+    const id = input.dataset.id;
+    const options = wordBank[id];
+    if (options) {
+      input.value = pick(options);
+      values[id] = input.value;
+    }
+  });
+  renderPreview();
 }
 
 const grid = document.getElementById('tpl-grid');

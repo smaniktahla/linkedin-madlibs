@@ -485,14 +485,15 @@ const templates = [
     label: '"I recently had the opportunity..."',
     fields: [
       { id: 'myOrg', label: 'My organization', placeholder: 'e.g. Smith & Partners' },
-      { id: 'kissup', label: 'Someone I want to kiss up to', placeholder: 'e.g. Jane Doe' },
+      { id: 'kissup', label: 'Name to kiss up to', placeholder: 'e.g. Jane Doe' },
+      { id: 'kissupAdj', label: 'Adjective to describe them', placeholder: 'e.g. visionary' },
       { id: 'timeframe', label: 'Timeframe', placeholder: 'e.g. the last three years' },
       { id: 'org', label: 'Their organization', placeholder: 'e.g. Y Combinator' },
       { id: 'jargon', label: 'Business jargon insight', placeholder: 'e.g. velocity beats perfection' },
       { id: 'term1', label: 'Business term', placeholder: 'e.g. unit economics' },
       { id: 'term2', label: 'General business success term', placeholder: 'e.g. long-term vision' },
     ],
-    render: (v) => `I recently had the opportunity to share insights about my practice at ${v.myOrg||'[MY ORG]'} and what I've learned from working alongside ${v.kissup||'[SOMEONE I WANT TO KISS UP TO]'} over the past ${v.timeframe||'[TIMEFRAME]'} with ${v.org||'[ORGANIZATION]'}.\n\nOne topic that came up repeatedly: ${v.jargon||'[BUSINESS JARGON]'}. Founders are making fast-moving decisions with real business consequences, and my role is always to help them understand the ${v.term1||'[BUSINESS TERM]'} while keeping their ${v.term2||'[GENERAL BUSINESS SUCCESS TERM]'} in focus.`
+    render: (v) => `I recently had the opportunity to share insights about my practice at ${v.myOrg||'[MY ORG]'} and what I've learned from working alongside the ${v.kissupAdj||'[ADJECTIVE]'} ${v.kissup||'[NAME]'} over the past ${v.timeframe||'[TIMEFRAME]'} with ${v.org||'[ORGANIZATION]'}.\n\nOne topic that came up repeatedly: ${v.jargon||'[BUSINESS JARGON]'}. Founders are making fast-moving decisions with real business consequences, and my role is always to help them understand the ${v.term1||'[BUSINESS TERM]'} while keeping their ${v.term2||'[GENERAL BUSINESS SUCCESS TERM]'} in focus.`
   }
 ];
 

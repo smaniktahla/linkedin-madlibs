@@ -492,7 +492,7 @@ const templates = [
       { id: 'term1', label: 'Business term', placeholder: 'e.g. unit economics' },
       { id: 'term2', label: 'General business success term', placeholder: 'e.g. long-term vision' },
     ],
-    render: (v) => `I recently had the opportunity to share insights about my practice at ${v.myOrg||'[MY ORG]'} and what I've learned from working alongside ${v.kissup||'[SOMEONE I WANT TO KISS UP TO]'} over the past ${v.timeframe||'[TIMEFRAME]'} with ${v.org||'[ORGANIZATION]'}.\n\nOne topic that came up repeatedly is that ${v.jargon||'[BUSINESS JARGON]'}. Founders are making fast-moving decisions with real business consequences, and my role is always to help them understand the ${v.term1||'[BUSINESS TERM]'} while keeping their ${v.term2||'[GENERAL BUSINESS SUCCESS TERM]'} in focus.`
+    render: (v) => `I recently had the opportunity to share insights about my practice at ${v.myOrg||'[MY ORG]'} and what I've learned from working alongside ${v.kissup||'[SOMEONE I WANT TO KISS UP TO]'} over the past ${v.timeframe||'[TIMEFRAME]'} with ${v.org||'[ORGANIZATION]'}.\n\nOne topic that came up repeatedly: ${v.jargon||'[BUSINESS JARGON]'}. Founders are making fast-moving decisions with real business consequences, and my role is always to help them understand the ${v.term1||'[BUSINESS TERM]'} while keeping their ${v.term2||'[GENERAL BUSINESS SUCCESS TERM]'} in focus.`
   }
 ];
 

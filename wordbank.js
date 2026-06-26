@@ -39,7 +39,7 @@ const wordBank = {
   contract:    ['a multi-year contract', 'a sole-source award', 'a blanket purchase agreement', 'an IDIQ contract', 'a task order'],
   vehicles:    ['F-35s', 'Stryker vehicles', 'Black Hawk helicopters', 'nuclear submarines', 'Abrams tanks', 'Reaper drones'],
   program:     ['JEDI', 'JWCC', 'Skynet', 'DARPA SBIR Phase II', 'the next-gen tactical comms initiative'],
-  jargon:      ['synergized our go-to-market', 'leveraged our core competencies', 'aligned on key deliverables', 'socialized the strategy', 'de-risked the pipeline'],
+  jargon:      ['velocity beats perfection', 'distribution is the moat', 'culture eats strategy for breakfast', 'clarity is the ultimate competitive advantage', 'trust is the new currency', 'execution is everything', 'the best product doesn\'t always win', 'data is the new oil', 'talent density trumps headcount', 'the market always wins', 'focus is a superpower', 'speed of iteration determines success', 'every company is now a technology company', 'the customer is always right — until they\'re not', 'relationships are the ultimate ROI'],
   term1:       ['disruptive', 'bleeding-edge', 'enterprise-grade', 'cloud-native', 'AI-first', 'zero-trust'],
   term2:       ['scalable', 'interoperable', 'mission-aligned', 'outcome-driven', 'modular', 'composable'],
 };

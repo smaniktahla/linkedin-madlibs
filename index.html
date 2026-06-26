@@ -261,6 +261,48 @@
       border-top: 1px solid var(--gray-200);
     }
 
+    /* Suggest modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      width: min(420px, 90vw);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    .modal h2 { font-size: 1rem; margin-bottom: 0.25rem; }
+    .modal p { font-size: 0.8rem; color: var(--gray-500); margin-bottom: 1rem; }
+    .modal textarea {
+      width: 100%; height: 100px; padding: 0.6rem 0.75rem;
+      border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 0.875rem; resize: vertical;
+    }
+    .modal textarea:focus { outline: none; border-color: var(--purple-600); }
+    .modal-actions {
+      display: flex; gap: 8px; justify-content: flex-end; margin-top: 0.75rem;
+    }
+    .btn-cancel {
+      background: none; border: 1px solid var(--gray-200);
+      padding: 0.4rem 1rem; border-radius: var(--radius-sm);
+      font-size: 0.875rem; cursor: pointer; color: var(--gray-700);
+    }
+    .btn-submit {
+      background: var(--purple-600); color: #fff; border: none;
+      padding: 0.4rem 1rem; border-radius: var(--radius-sm);
+      font-size: 0.875rem; cursor: pointer;
+    }
+    .btn-submit:hover { background: var(--purple-700); }
+    .modal-thanks { display: none; text-align: center; padding: 1rem 0; }
+    .modal-thanks p { font-size: 0.9rem; color: var(--gray-700); margin-top: 0.5rem; }
+
     @media (max-width: 480px) {
       .intro h1 { font-size: 1.3rem; }
       .template-grid { grid-template-columns: 1fr; }
@@ -351,7 +393,7 @@
 </main>
 
 <footer>
-  &copy; 2026 LinkedInMadLibs.com &mdash; not affiliated with LinkedIn. &nbsp;&middot;&nbsp; <a href="https://formspree.io/f/mqevqlez" target="_blank" rel="noopener" style="color: inherit;">Suggest a template</a>
+  &copy; 2026 LinkedInMadLibs.com &mdash; not affiliated with LinkedIn. &nbsp;&middot;&nbsp; <a href="#" id="suggest-link" style="color: inherit;">Suggest a template</a>
 </footer>
 
 <script>
@@ -524,6 +566,65 @@ templates.forEach((t, i) => {
   btn.onclick = () => selectTemplate(i);
   grid.appendChild(btn);
 });
+</script>
+
+<!-- Suggest a template modal -->
+<div class="modal-backdrop" id="suggest-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div id="modal-form-view">
+      <h2 id="modal-title">Suggest a template</h2>
+      <p>Got a LinkedIn trope we missed? Describe the vibe and we'll turn it into a Mad Lib.</p>
+      <form id="suggest-form" action="https://formspree.io/f/mqevqlez" method="POST">
+        <textarea name="suggestion" placeholder="e.g. 'The humble brag about leaving a big company to pursue passion projects...'" required></textarea>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" id="modal-cancel">Cancel</button>
+          <button type="submit" class="btn-submit">Send it</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-thanks" id="modal-thanks">
+      <div style="font-size:2rem">🎉</div>
+      <p>Got it! We'll consider adding it.<br>Thanks for the suggestion.</p>
+      <div class="modal-actions" style="justify-content:center;margin-top:1rem">
+        <button type="button" class="btn-cancel" id="modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const modal = document.getElementById('suggest-modal');
+  const link = document.getElementById('suggest-link');
+  const cancel = document.getElementById('modal-cancel');
+  const close = document.getElementById('modal-close');
+  const form = document.getElementById('suggest-form');
+
+  function openModal() { modal.classList.add('open'); }
+  function closeModal() {
+    modal.classList.remove('open');
+    setTimeout(() => {
+      document.getElementById('modal-form-view').style.display = '';
+      document.getElementById('modal-thanks').style.display = 'none';
+      form.reset();
+    }, 200);
+  }
+
+  link.addEventListener('click', e => { e.preventDefault(); openModal(); });
+  cancel.addEventListener('click', closeModal);
+  close.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+    if (res.ok) {
+      document.getElementById('modal-form-view').style.display = 'none';
+      document.getElementById('modal-thanks').style.display = 'block';
+    }
+  });
+})();
 </script>
 </body>
 </html>

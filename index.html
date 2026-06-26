@@ -375,6 +375,23 @@ const templates = [
     render: (v) => `So proud of our team at ${v.org||'[ORG]'}.\n\nWe hit ${v.metric||'[METRIC]'} in ${v.timeframe||'[TIMEFRAME]'}. Not because we worked harder than everyone else. But because we worked differently.\n\nThe secret? ${v.secret||'[SECRET]'}.\n\nThank you to every single person who made this possible. You know who you are.`
   },
   {
+    label: '"Everyone wants to..."',
+    fields: [
+      { id: 'hotThing', label: 'The hot thing everyone wants', placeholder: 'e.g. build AI' },
+      { id: 'layer1', label: 'Sexy top layer', placeholder: 'e.g. AI Tools' },
+      { id: 'layer1desc', label: 'Why people love it', placeholder: 'e.g. New models and demos every day' },
+      { id: 'layer2', label: 'Middle layer', placeholder: 'e.g. Data Analysis' },
+      { id: 'layer2desc', label: 'Why it matters', placeholder: 'e.g. Understanding what the data actually says' },
+      { id: 'layer3', label: 'Unglamorous foundation', placeholder: 'e.g. Data Cleaning' },
+      { id: 'layer3desc', label: 'Why it determines everything', placeholder: 'e.g. Fixing errors and inconsistencies' },
+      { id: 'irony1', label: 'What teams waste time on', placeholder: 'e.g. which model to use' },
+      { id: 'irony2', label: 'What they should focus on', placeholder: 'e.g. whether the data can be trusted' },
+      { id: 'punchline1', label: 'Closing line 1', placeholder: 'e.g. AI gets the spotlight.' },
+      { id: 'punchline2', label: 'Closing line 2', placeholder: 'e.g. Data gets the results.' },
+    ],
+    render: (v) => `Everyone wants to ${v.hotThing||'[HOT THING]'}.\n\nAlmost nobody wants to do the work that comes before it.\n\n1. ${v.layer1||'[LAYER 1]'}\n\nThis is where the excitement is.\n${v.layer1desc||'[WHY PEOPLE LOVE IT]'}.\n\n2. ${v.layer2||'[LAYER 2]'}\n\nThis is where reality begins.\n${v.layer2desc||'[WHY IT MATTERS]'} takes far more effort than it looks.\n\n3. ${v.layer3||'[LAYER 3]'}\n\nThis is where most value is created.\n${v.layer3desc||'[WHY IT DETERMINES EVERYTHING]'} isn't exciting, but it determines everything that follows.\n\nThe irony?\n\nMost teams spend weeks debating ${v.irony1||'[WHAT TEAMS WASTE TIME ON]'}.\n\nAnd only hours discussing ${v.irony2||'[WHAT THEY SHOULD FOCUS ON]'}.\n\n${v.punchline1||'[CLOSING LINE 1]'}\n\n${v.punchline2||'[CLOSING LINE 2]'}`
+  },
+  {
     label: '"I recently had the opportunity..."',
     fields: [
       { id: 'myOrg', label: 'My organization', placeholder: 'e.g. Smith & Partners' },

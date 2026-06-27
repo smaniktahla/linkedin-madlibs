@@ -494,6 +494,20 @@ const templates = [
       { id: 'term2', label: 'General business success term', placeholder: 'e.g. long-term vision' },
     ],
     render: (v) => `I recently had the opportunity to share insights about my practice at ${v.myOrg||'[MY ORG]'} and what I've learned from working alongside the ${v.kissupAdj||'[ADJECTIVE]'} ${v.kissup||'[NAME]'} over the past ${v.timeframe||'[TIMEFRAME]'} with ${v.org||'[ORGANIZATION]'}.\n\nOne topic that came up repeatedly: ${v.jargon||'[BUSINESS JARGON]'}. Founders are making fast-moving decisions with real business consequences, and my role is always to help them understand the ${v.term1||'[BUSINESS TERM]'} while keeping their ${v.term2||'[GENERAL BUSINESS SUCCESS TERM]'} in focus.`
+  },
+  {
+    label: '"Spending time with the [Family]..."',
+    fields: [
+      { id: 'dynasty', label: 'The important family/group', placeholder: 'e.g. Packard family' },
+      { id: 'dynastyDesc', label: 'What makes them special', placeholder: 'e.g. third-generation Culligan leaders' },
+      { id: 'partners', label: 'Agency/partner names to drop', placeholder: 'e.g. Tinuiti and Range Digital' },
+      { id: 'fancyPlace', label: 'Fancy location', placeholder: 'e.g. Lake Minnetonka' },
+      { id: 'virtue', label: 'What great partnerships are built on', placeholder: 'e.g. trust, shared values and human connections' },
+      { id: 'legacy', label: 'What you\'re preserving', placeholder: 'e.g. a remarkable legacy' },
+      { id: 'company', label: 'The company / brand', placeholder: 'e.g. Culligan International' },
+      { id: 'namelist', label: 'Wall of names to thank', placeholder: 'e.g. Derek, John, Lauren, Kelly...' },
+    ],
+    render: (v) => `Spending time with the ${v.dynasty||'[FAMILY/GROUP]'}—${v.dynastyDesc||'[WHAT MAKES THEM SPECIAL]'}—and our agency partners ${v.partners||'[PARTNER NAMES]'} at ${v.fancyPlace||'[FANCY LOCATION]'} was a reminder that the best partnerships are built on ${v.virtue||'[VIRTUE]'}.\n\nTogether, we're preserving ${v.legacy||'[LEGACY]'} while shaping the future of ${v.company||'[COMPANY]'}.\n\nThanks to ${v.namelist||'[WALL OF NAMES]'} for the enjoyable time together.`
   }
 ];
 

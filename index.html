@@ -235,6 +235,13 @@
     }
     .btn-primary:hover { background: var(--purple-700); border-color: var(--purple-700); }
     .btn.copied { color: var(--teal-600); border-color: var(--teal-600); background: var(--teal-50); }
+    .btn-autofill {
+      display: block;
+      width: fit-content;
+      font-size: 1rem;
+      padding: 12px 22px;
+      margin: 0.75rem 0 1.25rem;
+    }
 
     .divider {
       border: none;
@@ -363,10 +370,8 @@
   <div class="template-grid" id="tpl-grid"></div>
 
   <div class="fields-section" id="fields-section">
-    <div class="step-label" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-      <span>Step 2 — Fill in the blanks</span>
-      <button class="btn" id="autofill-btn" onclick="autoFill()" style="font-size:0.8rem;padding:0.3rem 0.8rem;">🎲 Create one for me</button>
-    </div>
+    <div class="step-label">Step 2 — Fill in the blanks</div>
+    <button class="btn btn-primary btn-autofill" id="autofill-btn" onclick="autoFill()">🎲 Create one for me</button>
     <div class="fields-grid" id="fields"></div>
   </div>
 
@@ -375,7 +380,8 @@
     <div class="step-label">Your post</div>
     <div class="preview-card" id="preview"></div>
     <div class="actions">
-      <button class="btn btn-primary" id="copy-btn" onclick="copyPost()">Copy post</button>
+      <button class="btn btn-primary" id="copy-btn" onclick="copyPost()">1. Copy Post</button>
+      <button class="btn" id="share-btn" onclick="shareToLinkedIn()">2. Share to LinkedIn</button>
       <button class="btn" onclick="resetAll()">Start over</button>
     </div>
   </div>
@@ -530,7 +536,7 @@ function selectTemplate(idx) {
   renderPreview();
   document.getElementById('fields-section').classList.add('visible');
   document.getElementById('preview-section').classList.add('visible');
-  document.getElementById('copy-btn').textContent = 'Copy post';
+  document.getElementById('copy-btn').textContent = '1. Copy Post';
   document.getElementById('copy-btn').classList.remove('copied');
 }
 
@@ -563,12 +569,27 @@ function copyPost() {
   const text = templates[selected].render(values);
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('copy-btn');
-    btn.textContent = 'Copied!';
+    btn.textContent = '1. Copied!';
     btn.classList.add('copied');
     setTimeout(() => {
-      btn.textContent = 'Copy post';
+      btn.textContent = '1. Copy Post';
       btn.classList.remove('copied');
     }, 2500);
+  });
+}
+
+function shareToLinkedIn() {
+  const text = templates[selected].render(values);
+  window.open('https://www.linkedin.com/feed/?shareActive=true', '_blank', 'noopener');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('share-btn');
+    const original = btn.textContent;
+    btn.textContent = '2. Copied — paste it in!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove('copied');
+    }, 3000);
   });
 }
 

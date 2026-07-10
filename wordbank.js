@@ -51,4 +51,11 @@ const wordBank = {
   jargon:      ['velocity beats perfection', 'distribution is the moat', 'culture eats strategy for breakfast', 'clarity is the ultimate competitive advantage', 'trust is the new currency', 'execution is everything', 'the best product doesn\'t always win', 'data is the new oil', 'talent density trumps headcount', 'the market always wins', 'focus is a superpower', 'speed of iteration determines success', 'every company is now a technology company', 'the customer is always right — until they\'re not', 'relationships are the ultimate ROI'],
   term1:       ['disruptive', 'bleeding-edge', 'enterprise-grade', 'cloud-native', 'AI-first', 'zero-trust'],
   term2:       ['scalable', 'interoperable', 'mission-aligned', 'outcome-driven', 'modular', 'composable'],
+  award:       ['FY26 Five Star Winner', 'President\'s Club honoree', 'Chairman\'s Award recipient', 'Above and Beyond Award winner', 'Circle of Excellence inductee', 'Top Performer of the Year', 'Rising Star Award recipient', 'Pinnacle Club member'],
+  awardOrg:    ['FedEx', 'UPS', 'Deloitte', 'Accenture', 'IBM', 'Lockheed Martin', 'Booz Allen Hamilton', 'Northrop Grumman', 'Verizon', 'Salesforce'],
+  team:        ['Global Air Freight', 'North America Logistics', 'Enterprise Cloud Solutions', 'Federal Civilian Services', 'Digital Transformation', 'Customer Success', 'Strategic Accounts', 'Supply Chain Operations'],
+  subteam:     ['Solution Design Implementation', 'Client Delivery', 'Program Management Office', 'Business Development', 'Technical Advisory', 'Change Management', 'Innovation Lab'],
+  challenge:   ['complex customer needs', 'competing stakeholder priorities', 'legacy system constraints', 'ambiguous requirements', 'a tight delivery timeline', 'shifting market demands'],
+  outcome:     ['scalable solutions', 'measurable business value', 'long-term client trust', 'repeatable playbooks', 'a smoother customer experience', 'sustainable growth'],
+  fiscalYear:  ['FY26', 'FY27', 'the year ahead', 'next quarter', 'the second half'],
 };

@@ -253,6 +253,16 @@
       margin: 1.75rem 0;
     }
 
+    .about-blurb h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .about-blurb p {
+      color: var(--gray-700);
+      font-size: 0.875rem;
+    }
+
     footer {
       text-align: center;
       padding: 2rem 1rem;
@@ -393,10 +403,23 @@
       <button class="btn" onclick="resetAll()">Start over</button>
     </div>
   </div>
+
+  <hr class="divider">
+
+  <div class="about-blurb">
+    <h2>What is this?</h2>
+    <p>LinkedIn Mad Libs is a satirical fill-in-the-blank generator built around the tired writing patterns that show up on LinkedIn over and over: the humble-brag congratulations, the funding-announcement mission statement, the "I recently had the opportunity to..." reflection, the iceberg breakdown, the federal-contractor buzzword salad. Pick a template above, drop in a few words, and it assembles a post in the exact cadence of the genre it's parodying: a two-minute joke, not a productivity tool. Read more on the <a href="/about.html">About page</a>.</p>
+  </div>
 </main>
 
 <footer>
-  &copy; 2026 <a href="https://ninjamonkey.dev" target="_blank" rel="noopener" style="color: inherit;">NinjaMonkey LLC</a> &mdash; not affiliated with LinkedIn. &nbsp;&middot;&nbsp; <a href="#" id="suggest-link" style="color: inherit;">Suggest a template</a>
+  &copy; 2026 <a href="https://ninjamonkey.dev" target="_blank" rel="noopener" style="color: inherit;">NinjaMonkey LLC</a> &mdash; not affiliated with LinkedIn.
+  <nav style="margin-top: 0.5rem;">
+    <a href="/about.html" style="color: inherit; margin: 0 0.4rem;">About</a>&middot;
+    <a href="/contact.html" style="color: inherit; margin: 0 0.4rem;">Contact</a>&middot;
+    <a href="/privacy.html" style="color: inherit; margin: 0 0.4rem;">Privacy Policy</a>&middot;
+    <a href="#" id="suggest-link" style="color: inherit; margin: 0 0.4rem;">Suggest a template</a>
+  </nav>
 </footer>
 
 <script src="wordbank.js"></script>

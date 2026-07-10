@@ -555,8 +555,12 @@ function onInput(el) {
   renderPreview();
 }
 
+function renderPost() {
+  return `${templates[selected].render(values)}\n\ncreated with linkedinmadlibs.com`;
+}
+
 function renderPreview() {
-  const raw = templates[selected].render(values);
+  const raw = renderPost();
   const html = raw
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -590,7 +594,7 @@ function copyToClipboard(text) {
 }
 
 function copyPost() {
-  const text = templates[selected].render(values);
+  const text = renderPost();
   const btn = document.getElementById('copy-btn');
   copyToClipboard(text).then(() => {
     btn.textContent = '1. Copied!';
@@ -606,7 +610,7 @@ function copyPost() {
 }
 
 function shareToLinkedIn() {
-  const text = templates[selected].render(values);
+  const text = renderPost();
   window.open('https://www.linkedin.com/feed/?shareActive=true', '_blank', 'noopener');
   const btn = document.getElementById('share-btn');
   const original = btn.textContent;

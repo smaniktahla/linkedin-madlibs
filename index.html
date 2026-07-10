@@ -513,9 +513,9 @@ const templates = [
       { id: 'subteam', label: 'Your specific team', placeholder: 'e.g. Solution Design Implementation' },
       { id: 'challenge', label: 'Vague challenge you tackle', placeholder: 'e.g. complex customer needs' },
       { id: 'outcome', label: 'Vague outcome you deliver', placeholder: 'e.g. scalable solutions' },
-      { id: 'fiscalYear', label: 'Fiscal year to look forward to', placeholder: 'e.g. FY26' },
+      { id: 'timeframe', label: 'Timeframe to look forward to', placeholder: 'e.g. FY26' },
     ],
-    render: (v) => `Surprised, humbled, and grateful to be recognized as a ${v.award||'[AWARD]'}, ${v.awardOrg||'[COMPANY]'}'s highest honor!\n\nSupporting the growth of ${v.team||'[TEAM]'} on the ${v.subteam||'[SUBTEAM]'} team has been one of the most rewarding experiences of my career. As demand continues to grow, I've had the opportunity to work with talented teams across the globe to turn ${v.challenge||'[CHALLENGE]'} into ${v.outcome||'[OUTCOME]'}.\n\nThis recognition is especially meaningful, and I'm grateful for the support of my team, leadership, and colleagues who make the work both challenging and rewarding every day.\n\nLooking forward to what we can accomplish in ${v.fiscalYear||'[FISCAL YEAR]'}!`
+    render: (v) => `Surprised, humbled, and grateful to be recognized as a ${v.award||'[AWARD]'}, ${v.awardOrg||'[COMPANY]'}'s highest honor!\n\nSupporting the growth of ${v.team||'[TEAM]'} on the ${v.subteam||'[SUBTEAM]'} team has been one of the most rewarding experiences of my career. As demand continues to grow, I've had the opportunity to work with talented teams across the globe to turn ${v.challenge||'[CHALLENGE]'} into ${v.outcome||'[OUTCOME]'}.\n\nThis recognition is especially meaningful, and I'm grateful for the support of my team, leadership, and colleagues who make the work both challenging and rewarding every day.\n\nLooking forward to what we can accomplish in ${v.timeframe||'[TIMEFRAME]'}!`
   }
 ];
 

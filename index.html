@@ -520,8 +520,12 @@ const templates = [
       { id: 'challenge', label: 'Vague challenge you tackle', placeholder: 'e.g. complex customer needs' },
       { id: 'outcome', label: 'Vague outcome you deliver', placeholder: 'e.g. scalable solutions' },
       { id: 'timeframe', label: 'Timeframe to look forward to', placeholder: 'e.g. FY26' },
+      { id: 'thankYouList', label: 'Mandatory thank-you list (optional)', placeholder: 'e.g. my incredible team, visionary leadership, the barista at Terminal C' },
     ],
-    render: (v) => `Surprised, humbled, and grateful to be recognized as a ${v.award||'[AWARD]'}, ${v.awardOrg||'[COMPANY]'}'s highest honor!\n\nSupporting the growth of ${v.team||'[TEAM]'} on the ${v.subteam||'[SUBTEAM]'} team has been one of the most rewarding experiences of my career. As demand continues to grow, I've had the opportunity to work with talented teams across the globe to turn ${v.challenge||'[CHALLENGE]'} into ${v.outcome||'[OUTCOME]'}.\n\nThis recognition is especially meaningful, and I'm grateful for the support of my team, leadership, and colleagues who make the work both challenging and rewarding every day.\n\nLooking forward to what we can accomplish in ${v.timeframe||'[TIMEFRAME]'}!`
+    render: (v) => {
+      const thanks = v.thankYouList ? `\n\nNone of this would have been possible without ${v.thankYouList}.` : '';
+      return `Surprised, humbled, and grateful to be recognized as a ${v.award||'[AWARD]'}, ${v.awardOrg||'[COMPANY]'}'s highest honor!\n\nSupporting the growth of ${v.team||'[TEAM]'} on the ${v.subteam||'[SUBTEAM]'} team has been one of the most rewarding experiences of my career. As demand continues to grow, I've had the opportunity to work with talented teams across the globe to turn ${v.challenge||'[CHALLENGE]'} into ${v.outcome||'[OUTCOME]'}.\n\nThis recognition is especially meaningful, and I'm grateful for the support of my team, leadership, and colleagues who make the work both challenging and rewarding every day.${thanks}\n\nLooking forward to what we can accomplish in ${v.timeframe||'[TIMEFRAME]'}!`;
+    }
   },
   {
     label: '"I got let go last month..."',
@@ -720,13 +724,30 @@ function resetAll() {
 
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
+function pickList(arr, min, max) {
+  const count = Math.floor(Math.random() * (max - min + 1)) + min;
+  const pool = [...arr];
+  const chosen = [];
+  for (let i = 0; i < count && pool.length; i++) {
+    chosen.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+  }
+  if (chosen.length === 1) return chosen[0];
+  return `${chosen.slice(0, -1).join(', ')}, and ${chosen[chosen.length - 1]}`;
+}
+
+const MULTI_PICK_FIELDS = { thankYouList: [3, 5] };
+
 function autoFill() {
   if (selected === null) return;
   const inputs = document.querySelectorAll('#fields input');
   inputs.forEach(input => {
     const id = input.dataset.id;
     const options = wordBank[id];
-    if (options) {
+    if (options && MULTI_PICK_FIELDS[id]) {
+      const [min, max] = MULTI_PICK_FIELDS[id];
+      input.value = pickList(options, min, max);
+      values[id] = input.value;
+    } else if (options) {
       input.value = pick(options);
       values[id] = input.value;
     }

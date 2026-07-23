@@ -564,8 +564,9 @@ const templates = [
       { id: 'lesson3', label: 'Lesson 3', placeholder: 'e.g. your network is your net worth' },
       { id: 'lesson4', label: 'Lesson 4', placeholder: 'e.g. done is better than perfect' },
       { id: 'lesson5', label: 'Lesson 5', placeholder: 'e.g. nobody is coming to save you' },
+      { id: 'closingLine', label: 'Closing line', placeholder: 'e.g. Onward.' },
     ],
-    render: (v) => `${v.years||'[N]'} years, ${v.years||'[N]'} lessons.\n\n1. ${v.lesson1||'[LESSON 1]'}\n2. ${v.lesson2||'[LESSON 2]'}\n3. ${v.lesson3||'[LESSON 3]'}\n4. ${v.lesson4||'[LESSON 4]'}\n5. ${v.lesson5||'[LESSON 5]'}\n\nHere's to the next ${v.years||'[N]'}.`
+    render: (v) => `${v.years||'[N]'} years, ${v.years||'[N]'} lessons.\n\n1. ${v.lesson1||'[LESSON 1]'}\n2. ${v.lesson2||'[LESSON 2]'}\n3. ${v.lesson3||'[LESSON 3]'}\n4. ${v.lesson4||'[LESSON 4]'}\n5. ${v.lesson5||'[LESSON 5]'}\n\n${v.closingLine||'[CLOSING LINE]'}`
   },
   {
     label: '"I almost didn\'t send that message..."',
@@ -573,10 +574,10 @@ const templates = [
       { id: 'channel', label: 'How you nearly reached out', placeholder: 'e.g. a cold LinkedIn DM' },
       { id: 'name', label: 'Who you reached out to', placeholder: 'e.g. Alex Chen' },
       { id: 'doubt', label: 'The hesitation', placeholder: "e.g. I told myself they'd never respond" },
-      { id: 'outcome', label: 'What happened next', placeholder: 'e.g. it turned into a mentorship that changed my career' },
+      { id: 'networkOutcome', label: 'What happened next', placeholder: 'e.g. it turned into a mentorship that changed my career' },
       { id: 'moral', label: 'The moral', placeholder: 'e.g. send the message' },
     ],
-    render: (v) => `I almost didn't send that message.\n\nI'd drafted and deleted ${v.channel||'[CHANNEL]'} to ${v.name||'[NAME]'} probably five times. ${v.doubt||'[DOUBT]'}.\n\nI sent it anyway. ${v.outcome||'[OUTCOME]'}.\n\nThe moral? ${v.moral||'[MORAL]'}`
+    render: (v) => `I almost didn't send that message.\n\nI'd drafted and deleted ${v.channel||'[CHANNEL]'} to ${v.name||'[NAME]'} probably five times. ${v.doubt||'[DOUBT]'}.\n\nI sent it anyway. ${v.networkOutcome||'[WHAT HAPPENED NEXT]'}.\n\nThe moral? ${v.moral||'[MORAL]'}`
   },
   {
     label: '"Today, I am proud to announce..."',
@@ -592,6 +593,14 @@ const templates = [
       { id: 'offer', label: 'The sales pitch CTA', placeholder: 'e.g. build a 90-day AI action plan to cement your AI governance' },
     ],
     render: (v) => `Today, I am proud to announce that ${v.org||'[COMPANY]'}'s ${v.product||'[PRODUCT]'} has achieved ${v.certification||'[CERTIFICATION]'}.\n\nIt's ${v.certDesc||'[WHY IT MATTERS]'}. ${v.superlative1||'[SUPERLATIVE CLAIM 1]'}, and ${v.superlative2||'[SUPERLATIVE CLAIM 2]'}.\n\n${v.tension||'[FALSE DICHOTOMY]'} ${v.resolution||'[FALSE CHOICE, RESOLVED]'}\n\nWork with us to ${v.offer||'[SALES PITCH]'}: linkedinmadlibs.com`
+  },
+  {
+    label: '"LinkedIn CEO Mode" 🔥',
+    fields: [
+      { id: 'product', label: 'Product / platform name', placeholder: 'e.g. AI-powered Quantum Synergy Fabric™' },
+      { id: 'certification', label: 'Certification achieved', placeholder: 'e.g. USDA Organic certification' },
+    ],
+    render: (v) => `Today, I'm incredibly humbled to announce that our ${v.product||'[PRODUCT]'} has achieved ${v.certification||'[CERTIFICATION]'}.\n\nThis milestone represents not only a paradigm shift, but a paradigm shift of paradigm shifts.\n\nTo everyone who said this couldn't be done:\n\nThank you.\n\nYou were the fuel.\n\n#leadership #innovation #humble #blessed #disruption #ai #gratitude #family #grind #synergy`
   }
 ];
 

@@ -522,6 +522,76 @@ const templates = [
       { id: 'timeframe', label: 'Timeframe to look forward to', placeholder: 'e.g. FY26' },
     ],
     render: (v) => `Surprised, humbled, and grateful to be recognized as a ${v.award||'[AWARD]'}, ${v.awardOrg||'[COMPANY]'}'s highest honor!\n\nSupporting the growth of ${v.team||'[TEAM]'} on the ${v.subteam||'[SUBTEAM]'} team has been one of the most rewarding experiences of my career. As demand continues to grow, I've had the opportunity to work with talented teams across the globe to turn ${v.challenge||'[CHALLENGE]'} into ${v.outcome||'[OUTCOME]'}.\n\nThis recognition is especially meaningful, and I'm grateful for the support of my team, leadership, and colleagues who make the work both challenging and rewarding every day.\n\nLooking forward to what we can accomplish in ${v.timeframe||'[TIMEFRAME]'}!`
+  },
+  {
+    label: '"I got let go last month..."',
+    fields: [
+      { id: 'org', label: 'Company you got let go from', placeholder: 'e.g. Meridian Digital' },
+      { id: 'timeframe', label: 'Timeframe', placeholder: 'e.g. last month' },
+      { id: 'excuse', label: 'The corporate euphemism for why', placeholder: 'e.g. a restructuring' },
+      { id: 'lesson', label: "The lesson you 'learned'", placeholder: 'e.g. hustle culture was quietly killing me' },
+      { id: 'gratitude', label: 'Who gets the thank-you', placeholder: 'e.g. my former team' },
+      { id: 'openRole', label: "The role you're 'open to'", placeholder: 'e.g. Head of Growth' },
+    ],
+    render: (v) => `I got let go from ${v.org||'[COMPANY]'} ${v.timeframe||'[TIMEFRAME]'}.\n\nHere's why it might be the best thing that's ever happened to me.\n\nFor years I told myself ${v.excuse||'[EUPHEMISM]'} was just part of the job. It wasn't until I had the time to sit with it that I realized ${v.lesson||'[LESSON]'}.\n\nGrateful beyond words for ${v.gratitude||'[GRATITUDE]'} and everyone who reached out.\n\nIf you're hiring for a ${v.openRole||'[OPEN ROLE]'}, my DMs are open.`
+  },
+  {
+    label: '"I don\'t usually post about this, but..."',
+    fields: [
+      { id: 'modesty', label: 'Reason for your reluctance', placeholder: "e.g. I'm not one to toot my own horn" },
+      { id: 'boast', label: 'The actual boast', placeholder: 'e.g. we just crossed 8 figures in ARR' },
+      { id: 'humbleBrag', label: 'What "really" made it happen', placeholder: 'e.g. years of 80-hour weeks' },
+      { id: 'cta', label: 'Call to action', placeholder: 'e.g. drop a comment below' },
+    ],
+    render: (v) => `I don't usually post about this, but ${v.modesty||'[REASON FOR RELUCTANCE]'}.\n\nToday ${v.boast||'[THE ACTUAL BOAST]'}.\n\nIt wasn't luck. It was ${v.humbleBrag||'[WHAT REALLY MADE IT HAPPEN]'}.\n\n${v.cta||'[CTA]'}`
+  },
+  {
+    label: '"I don\'t hire for [skill]. I hire for..."',
+    fields: [
+      { id: 'skillNot', label: "The skill you claim not to hire for", placeholder: 'e.g. credentials' },
+      { id: 'qualityInstead', label: 'The vague quality you hire for instead', placeholder: 'e.g. grit' },
+      { id: 'example', label: 'A supporting anecdote', placeholder: 'e.g. the best engineer on my team never finished college' },
+      { id: 'punchline', label: 'Closing hot take', placeholder: "e.g. talent doesn't care about your pedigree" },
+    ],
+    render: (v) => `I don't hire for ${v.skillNot||'[SKILL]'}.\n\nI hire for ${v.qualityInstead||'[VAGUE QUALITY]'}.\n\n${v.example||'[SUPPORTING ANECDOTE]'}.\n\n${v.punchline||'[PUNCHLINE]'}`
+  },
+  {
+    label: '"[N] years, [N] lessons"',
+    fields: [
+      { id: 'years', label: 'Number of years', placeholder: 'e.g. 10' },
+      { id: 'lesson1', label: 'Lesson 1', placeholder: 'e.g. consistency beats intensity' },
+      { id: 'lesson2', label: 'Lesson 2', placeholder: "e.g. say yes before you're ready" },
+      { id: 'lesson3', label: 'Lesson 3', placeholder: 'e.g. your network is your net worth' },
+      { id: 'lesson4', label: 'Lesson 4', placeholder: 'e.g. done is better than perfect' },
+      { id: 'lesson5', label: 'Lesson 5', placeholder: 'e.g. nobody is coming to save you' },
+    ],
+    render: (v) => `${v.years||'[N]'} years, ${v.years||'[N]'} lessons.\n\n1. ${v.lesson1||'[LESSON 1]'}\n2. ${v.lesson2||'[LESSON 2]'}\n3. ${v.lesson3||'[LESSON 3]'}\n4. ${v.lesson4||'[LESSON 4]'}\n5. ${v.lesson5||'[LESSON 5]'}\n\nHere's to the next ${v.years||'[N]'}.`
+  },
+  {
+    label: '"I almost didn\'t send that message..."',
+    fields: [
+      { id: 'channel', label: 'How you nearly reached out', placeholder: 'e.g. a cold LinkedIn DM' },
+      { id: 'name', label: 'Who you reached out to', placeholder: 'e.g. Alex Chen' },
+      { id: 'doubt', label: 'The hesitation', placeholder: "e.g. I told myself they'd never respond" },
+      { id: 'outcome', label: 'What happened next', placeholder: 'e.g. it turned into a mentorship that changed my career' },
+      { id: 'moral', label: 'The moral', placeholder: 'e.g. send the message' },
+    ],
+    render: (v) => `I almost didn't send that message.\n\nI'd drafted and deleted ${v.channel||'[CHANNEL]'} to ${v.name||'[NAME]'} probably five times. ${v.doubt||'[DOUBT]'}.\n\nI sent it anyway. ${v.outcome||'[OUTCOME]'}.\n\nThe moral? ${v.moral||'[MORAL]'}`
+  },
+  {
+    label: '"Today, I am proud to announce..."',
+    fields: [
+      { id: 'org', label: 'Company name', placeholder: 'e.g. JetStream' },
+      { id: 'product', label: 'Product / platform name', placeholder: 'e.g. Security-first AI Governance Platform (SAIG)' },
+      { id: 'certification', label: 'Certification achieved', placeholder: 'e.g. FedRAMP High certification' },
+      { id: 'certDesc', label: 'Why the certification matters', placeholder: 'e.g. one of the most rigorous publicly available third-party baselines for cloud services' },
+      { id: 'superlative1', label: 'Superlative claim #1', placeholder: 'e.g. We are the first purpose-built AI control plane to reach it' },
+      { id: 'superlative2', label: 'Superlative claim #2', placeholder: 'e.g. one of the fastest companies to achieve High certification' },
+      { id: 'tension', label: 'The false dichotomy your customers face', placeholder: 'e.g. Federal agencies are being told to move fast on AI while answering to the highest standards of security.' },
+      { id: 'resolution', label: 'The false choice, resolved', placeholder: "e.g. You shouldn't have to choose between speed and trust. We help you get both." },
+      { id: 'offer', label: 'The sales pitch CTA', placeholder: 'e.g. build a 90-day AI action plan to cement your AI governance' },
+    ],
+    render: (v) => `Today, I am proud to announce that ${v.org||'[COMPANY]'}'s ${v.product||'[PRODUCT]'} has achieved ${v.certification||'[CERTIFICATION]'}.\n\nIt's ${v.certDesc||'[WHY IT MATTERS]'}. ${v.superlative1||'[SUPERLATIVE CLAIM 1]'}, and ${v.superlative2||'[SUPERLATIVE CLAIM 2]'}.\n\n${v.tension||'[FALSE DICHOTOMY]'} ${v.resolution||'[FALSE CHOICE, RESOLVED]'}\n\nWork with us to ${v.offer||'[SALES PITCH]'}: linkedinmadlibs.com`
   }
 ];
 
@@ -604,7 +674,7 @@ function copyPost() {
       btn.classList.remove('copied');
     }, 2500);
   }).catch(() => {
-    btn.textContent = '1. Copy failed — select manually';
+    btn.textContent = '1. Copy failed, select manually';
     setTimeout(() => { btn.textContent = '1. Copy Post'; }, 3000);
   });
 }
@@ -615,14 +685,14 @@ function shareToLinkedIn() {
   const btn = document.getElementById('share-btn');
   const original = btn.textContent;
   copyToClipboard(text).then(() => {
-    btn.textContent = '2. Copied — paste it in!';
+    btn.textContent = '2. Copied, paste it in!';
     btn.classList.add('copied');
     setTimeout(() => {
       btn.textContent = original;
       btn.classList.remove('copied');
     }, 3000);
   }).catch(() => {
-    btn.textContent = '2. Copy failed — paste manually';
+    btn.textContent = '2. Copy failed, paste manually';
     setTimeout(() => { btn.textContent = original; }, 3000);
   });
 }

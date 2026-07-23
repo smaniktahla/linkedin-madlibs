@@ -422,7 +422,7 @@ const templates = [
       { id: 'takeaway', label: 'Humble takeaway', placeholder: 'e.g. so much to learn' },
       { id: 'cta', label: 'Call to action', placeholder: 'e.g. drop a comment below' },
     ],
-    render: (v) => `This event changed everything.\n\n${v.event||'[EVENT]'} brought together some of the sharpest minds in the industry to talk about ${v.topic||'[TOPIC]'}.\n\nI left the room with pages of notes and a reminder that there is ${v.takeaway||'[HUMBLE TAKEAWAY]'}.\n\nIf you were there, ${v.cta||'[CTA]'} — I'd love to connect.`
+    render: (v) => `This event changed everything.\n\n${v.event||'[EVENT]'} brought together some of the sharpest minds in the industry to talk about ${v.topic||'[TOPIC]'}.\n\nI left the room with pages of notes and one reminder: ${v.takeaway||'[HUMBLE TAKEAWAY]'}.\n\nIf you were there, ${v.cta||'[CTA]'}, I'd love to connect.`
   },
   {
     label: '"Please join me in congratulating..."',

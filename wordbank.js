@@ -103,3 +103,5 @@ const wordBank = {
   offer:       ['build a 90-day AI action plan to cement your AI governance', 'see how we can fast-track your next audit', 'get a free governance readiness assessment', 'map out your path to certification in half the time', 'see how fast we can grab money from pensioners', 'see how well we remove safety guardrails in the interest of making a quick buck', 'schedule a synergistic alignment conversation', "let's circle back", "let's unpack that", 'book a discovery call before my CEO has another idea', 'download our 47-page thought leadership manifesto', 'help us justify this marketing budget', 'request a personalized executive vision workshop', 'smash that Contact Us button', "let's disrupt your calendar together"],
   thankYouList: ['my incredible team', 'visionary leadership', 'my mentors', 'every single colleague', 'everyone who believed in me', 'my family', 'my dog', 'the coffee machine', 'ChatGPT', 'the janitorial staff', 'everyone who crossed my path', 'YOU', 'the barista at Terminal C'],
 };
+
+if (typeof module !== "undefined") module.exports = wordBank;

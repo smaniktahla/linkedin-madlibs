@@ -5,3 +5,9 @@
 
 /wordbank.js
   Cache-Control: no-cache, no-store, must-revalidate
+
+/api/*
+  Cache-Control: no-store
+
+/templates.js
+  Cache-Control: no-cache, no-store, must-revalidate

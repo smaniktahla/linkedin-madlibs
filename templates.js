@@ -2,6 +2,8 @@
 // classic script in index.html) and the TRMNL endpoint (functions/api/trmnl.js,
 // bundled by Pages, which picks up the module.exports below).
 // Each field `id` matches a key in wordBank (wordbank.js).
+const an = (w) => (/^[aeiou]/i.test(w) ? 'an ' : 'a ') + w;
+
 const templates = [
   {
     label: '"The most effective..."',
@@ -205,6 +207,88 @@ const templates = [
       { id: 'certification', label: 'Certification achieved', placeholder: 'e.g. USDA Organic certification' },
     ],
     render: (v) => `Today, I'm incredibly humbled to announce that our ${v.product||'[PRODUCT]'} has achieved ${v.certification||'[CERTIFICATION]'}.\n\nThis milestone represents not only a paradigm shift, but a paradigm shift of paradigm shifts.\n\nTo everyone who said this couldn't be done:\n\nThank you.\n\nYou were the fuel.\n\n#leadership #innovation #humble #blessed #disruption #ai #gratitude #family #grind #synergy`
+  },
+  {
+    label: '"My kid taught me more than any MBA..."',
+    fields: [
+      { id: 'childWho', label: 'The child / person', placeholder: 'e.g. 8-year-old' },
+      { id: 'childAct', label: 'Mundane thing they did', placeholder: 'e.g. refused to put on their shoes' },
+      { id: 'childInsight', label: 'Profound interpretation', placeholder: "e.g. this wasn't stubbornness. It was exclusion from the decision" },
+      { id: 'childPrinciple', label: 'Business principle', placeholder: 'e.g. why 70% of digital transformations fail' },
+      { id: 'childMoral', label: 'Closing moral', placeholder: "e.g. Leadership isn't about getting people to put on their shoes. It's about helping them understand why the shoes matter." },
+    ],
+    render: (v) => `My ${v.childWho||'[CHILD]'} taught me more about leadership than any MBA ever could.\n\nThis morning, they ${v.childAct||'[MUNDANE THING]'}.\n\nAt first, I saw a problem.\n\nThen I realized: ${v.childInsight||'[PROFOUND INTERPRETATION]'}.\n\nAnd suddenly I understood ${v.childPrinciple||'[BUSINESS PRINCIPLE]'}.\n\n${v.childMoral||'[CLOSING MORAL]'}\n\nMy ${v.childWho||'[CHILD]'} has never managed a P&L.\nBut today they taught me more about change management than most executives ever will.`
+  },
+  {
+    label: '"My flight was delayed. Here\'s what it taught me about leadership."',
+    fields: [
+      { id: 'flightTrouble', label: 'The inconvenience', placeholder: 'e.g. my flight was delayed 6 hours' },
+      { id: 'flightPerson', label: 'Unlikely hero', placeholder: 'e.g. a gate agent named Dave' },
+      { id: 'flightAct', label: 'Tiny act', placeholder: 'e.g. handed out phone chargers' },
+      { id: 'flightBuzz', label: 'Business jargon', placeholder: 'e.g. radical ownership' },
+    ],
+    render: (v) => `Yesterday ${v.flightTrouble||'[INCONVENIENCE]'}.\n\nEveryone at the gate was frustrated.\n\nThen ${v.flightPerson||'[PERSON]'} did something remarkable: ${v.flightAct||'[TINY ACT]'}.\n\nNo title. No authority. No playbook.\n\nJust ${v.flightBuzz||'[BUZZWORD]'}.\n\nIt reminded me that leadership isn't a position.\nIt's what you do when nobody has given you permission to lead.\n\nAirlines lose luggage.\nGreat leaders deliver clarity.`
+  },
+  {
+    label: '"I fired my best employee."',
+    fields: [
+      { id: 'fireSuperlative', label: 'Employee superlative', placeholder: 'e.g. our top salesperson' },
+      { id: 'fireMetric', label: 'Impressive metric', placeholder: 'e.g. beat quota by 140%' },
+      { id: 'fireFlaw', label: 'Fatal flaw', placeholder: 'e.g. used Reply All' },
+      { id: 'fireValue', label: 'Violated company value', placeholder: 'e.g. radical humility' },
+    ],
+    render: (v) => `I fired my best employee yesterday.\n\nThey were ${v.fireSuperlative||'[SUPERLATIVE]'}.\nThey ${v.fireMetric||'[METRIC]'}.\n\nEvery quarter. Without fail.\n\nBut they ${v.fireFlaw||'[FATAL FLAW]'}.\n\nAnd that violated one of our most important values: ${v.fireValue||'[COMPANY VALUE]'}.\n\nPerformance gets you a seat at the table.\nCharacter determines whether you stay there.\n\nCulture isn't what you put on the wall.\nIt's who you're willing to fire.`
+  },
+  {
+    label: '"I rejected a candidate who was perfect on paper."',
+    fields: [
+      { id: 'rejCredentials', label: 'Their credentials', placeholder: 'e.g. an MBA, 3 patents, and a TEDx talk' },
+      { id: 'rejQuestion', label: 'Interview question', placeholder: 'e.g. What does ownership mean to you?' },
+      { id: 'rejAnswer', label: 'The disqualifying answer', placeholder: 'e.g. I prefer to be told what to do' },
+      { id: 'rejVague', label: 'The vague quality you can\'t teach', placeholder: 'e.g. Humility' },
+      { id: 'rejQuality', label: 'Quality your eventual hire had twice of', placeholder: 'e.g. hunger' },
+    ],
+    render: (v) => `Yesterday I interviewed someone with ${v.rejCredentials||'[CREDENTIALS]'}.\n\nOn paper, they were perfect.\n\nBut when I asked "${v.rejQuestion||'[INTERVIEW QUESTION]'}", they said:\n\n"${v.rejAnswer||'[BAD ANSWER]'}"\n\nI ended the interview 10 minutes later.\n\nBecause skills can be taught.\n${v.rejVague||'[VAGUE QUALITY]'} can't.\n\nWe didn't hire them.\n\nThree months later, we hired someone with half the experience and twice the ${v.rejQuality||'[QUALITY]'}.\n\nBest decision we ever made.`
+  },
+  {
+    label: '"I stopped taking meetings before 10 AM."',
+    fields: [
+      { id: 'habit', label: 'The thing you stopped doing', placeholder: 'e.g. taking meetings before 10 AM' },
+      { id: 'habitResult', label: 'Impressive result', placeholder: 'e.g. our revenue grew 40%' },
+    ],
+    render: (v) => `Six months ago, I stopped ${v.habit||'[HABIT]'}.\n\nPeople thought I was crazy.\n\nMy calendar opened up.\nMy thinking got sharper.\nMy team became more autonomous.\n\nAnd ${v.habitResult||'[METRIC]'}.\n\nCoincidence? Maybe.\n\nBut here's what I've learned:\n\nYour calendar isn't a scheduling tool.\nIt's a statement of priorities.\n\nProtect it accordingly.`
+  },
+  {
+    label: '"Everyone is using AI wrong."',
+    fields: [
+      { id: 'aiWrongQ', label: 'The wrong question', placeholder: 'e.g. Which model should we use?' },
+      { id: 'aiDeepQ', label: 'The supposedly deep question', placeholder: 'e.g. Where does judgment actually create value?' },
+      { id: 'aiThing1', label: 'What AI isn\'t', placeholder: 'e.g. tool' },
+      { id: 'aiThing2', label: 'What AI is', placeholder: 'e.g. operating model' },
+      { id: 'aiOutcome', label: 'What the winners will do', placeholder: 'e.g. redefine their industries' },
+    ],
+    render: (v) => `Everyone is using AI wrong.\n\nThey're asking:\n"${v.aiWrongQ||'[WRONG QUESTION]'}"\n\nThe real question is:\n"${v.aiDeepQ||'[DEEP QUESTION]'}"\n\nAI isn't ${an(v.aiThing1||'[THING 1]')}.\nIt's ${an(v.aiThing2||'[THING 2]')}.\n\nThe companies that understand this will ${v.aiOutcome||'[WINNER OUTCOME]'}.\n\nThe ones that don't?\nThey'll spend the next 5 years wondering what happened.`
+  },
+  {
+    label: '"We turned down $X in revenue."',
+    fields: [
+      { id: 'revAmount', label: 'Absurd amount', placeholder: 'e.g. $4.2M' },
+      { id: 'revDemand', label: 'What the customer demanded', placeholder: 'e.g. asked for a discount' },
+      { id: 'revPrinciple', label: 'The principle you chose', placeholder: 'e.g. focus' },
+    ],
+    render: (v) => `Last quarter, we walked away from ${v.revAmount||'[AMOUNT]'} in revenue.\n\nNot because we couldn't deliver.\n\nBecause the customer ${v.revDemand||'[CUSTOMER DEMAND]'}.\n\nIt would have been easy to say yes.\n\nBut every yes is also a no to something else.\n\nWe chose ${v.revPrinciple||'[PRINCIPLE]'}.\n\nShort-term revenue is temporary.\nTrust compounds.`
+  },
+  {
+    label: '"What [ridiculous activity] taught me about B2B sales."',
+    fields: [
+      { id: 'activity', label: 'Ridiculous activity', placeholder: 'e.g. smoking a brisket for 14 hours' },
+      { id: 'actMoment', label: 'The specific moment', placeholder: 'e.g. hour nine' },
+      { id: 'actLesson1', label: 'Lesson 1', placeholder: 'e.g. Patience closes deals' },
+      { id: 'actLesson2', label: 'Lesson 2', placeholder: 'e.g. Nobody reads the instructions' },
+      { id: 'actLesson3', label: 'Lesson 3', placeholder: 'e.g. The champion matters more than the contract' },
+      { id: 'actPunchline', label: 'Activity punchline', placeholder: 'e.g. Low and slow wins' },
+    ],
+    render: (v) => `I spent this weekend ${v.activity||'[ACTIVITY]'}.\n\nSomewhere around ${v.actMoment||'[SPECIFIC MOMENT]'}, it hit me:\n\nThis is exactly like B2B sales.\n\n${v.actLesson1||'[LESSON 1]'}.\n${v.actLesson2||'[LESSON 2]'}.\n${v.actLesson3||'[LESSON 3]'}.\n\nThe parallels are impossible to ignore.\n\n${v.actPunchline||'[PUNCHLINE]'}.\n\nSales is no different.`
   }
 ];
 

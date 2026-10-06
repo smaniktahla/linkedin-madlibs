@@ -518,33 +518,15 @@ function resetAll() {
 }
 
 
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-function pickList(arr, min, max) {
-  const count = Math.floor(Math.random() * (max - min + 1)) + min;
-  const pool = [...arr];
-  const chosen = [];
-  for (let i = 0; i < count && pool.length; i++) {
-    chosen.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
-  }
-  if (chosen.length === 1) return chosen[0];
-  return `${chosen.slice(0, -1).join(', ')}, and ${chosen[chosen.length - 1]}`;
-}
-
 function autoFill() {
   if (selected === null) return;
+  const used = new Set();
   const inputs = document.querySelectorAll('#fields input');
-  inputs.forEach(input => {
-    const id = input.dataset.id;
-    const options = wordBank[id];
-    if (options && MULTI_PICK_FIELDS[id]) {
-      const [min, max] = MULTI_PICK_FIELDS[id];
-      input.value = pickList(options, min, max);
-      values[id] = input.value;
-    } else if (options) {
-      input.value = pick(options);
-      values[id] = input.value;
-    }
+  templates[selected].fields.forEach((field, i) => {
+    const options = bankFor(field, wordBank);
+    if (!options) return;
+    inputs[i].value = drawValue(field, options, used);
+    values[field.id] = inputs[i].value;
   });
   renderPreview();
 }

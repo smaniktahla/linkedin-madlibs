@@ -1,7 +1,9 @@
 // Post templates for linkedinmadlibs.com. Shared by the site (loaded as a
 // classic script in index.html) and the TRMNL endpoint (functions/api/trmnl.js,
 // bundled by Pages, which picks up the module.exports below).
-// Each field `id` matches a key in wordBank (wordbank.js).
+// A field draws from wordBank[field.pool || field.id] (wordbank.js): `pool` names a
+// shared bank, otherwise the field's own `id` is the key. Same id => shared too.
+const cap = (w) => w.charAt(0).toUpperCase() + w.slice(1);
 const an = (w) => (/^[aeiou]/i.test(w) ? 'an ' : 'a ') + w;
 
 const templates = [
@@ -10,9 +12,9 @@ const templates = [
     fields: [
       { id: 'trait', label: 'A leadership trait', placeholder: 'e.g. habit' },
       { id: 'role', label: 'Your role', placeholder: 'e.g. founder' },
-      { id: 'jargon1', label: 'Business jargon #1', placeholder: 'e.g. alignment' },
-      { id: 'jargon2', label: 'Business jargon #2', placeholder: 'e.g. leverage' },
-      { id: 'buzzword', label: 'Inspirational buzzword', placeholder: 'e.g. impact' },
+      { id: 'jargon1', pool: 'buzzwords', label: 'Business jargon #1', placeholder: 'e.g. alignment' },
+      { id: 'jargon2', pool: 'buzzwords', label: 'Business jargon #2', placeholder: 'e.g. leverage' },
+      { id: 'buzzword', pool: 'buzzwords', label: 'Inspirational buzzword', placeholder: 'e.g. impact' },
     ],
     render: (v) => `The most effective ${v.trait||'[TRAIT]'} I've seen in a ${v.role||'[ROLE]'} isn't what most people think.\n\nIt's not about ${v.jargon1||'[JARGON 1]'}.\nIt's not about ${v.jargon2||'[JARGON 2]'}.\n\nIt's about ${v.buzzword||'[BUZZWORD]'}.\n\nAnd the best ones do it every single day.`
   },
@@ -29,17 +31,17 @@ const templates = [
   {
     label: '"Please join me in congratulating..."',
     fields: [
-      { id: 'name', label: "Person's name", placeholder: 'e.g. Alex Chen' },
+      { id: 'name', pool: 'people', label: "Person's name", placeholder: 'e.g. Alex Chen' },
       { id: 'achievement', label: 'Their achievement', placeholder: 'e.g. new role at Google' },
-      { id: 'quality', label: 'Vague quality they have', placeholder: 'e.g. passion for impact' },
-      { id: 'org', label: 'Their new organization', placeholder: 'e.g. Google' },
+      { id: 'quality', pool: 'qualities', label: 'Vague quality they have', placeholder: 'e.g. passion for impact' },
+      { id: 'org', pool: 'orgs', label: 'Their new organization', placeholder: 'e.g. Google' },
     ],
     render: (v) => `Please join me in congratulating ${v.name||'[NAME]'} on ${v.achievement||'[ACHIEVEMENT]'}!\n\nI've had the privilege of watching ${v.name||'[NAME]'} grow and I can say with confidence that their ${v.quality||'[QUALITY]'} is truly remarkable.\n\n${v.org||'[ORG]'} is lucky to have them. Wishing you all the best on this exciting new chapter!`
   },
   {
     label: '"We are proud to announce..."',
     fields: [
-      { id: 'org', label: 'Your organization', placeholder: 'e.g. Acme Corp' },
+      { id: 'org', pool: 'orgs', label: 'Your organization', placeholder: 'e.g. Acme Corp' },
       { id: 'announcement', label: "The thing you're announcing", placeholder: 'e.g. our Series A' },
       { id: 'mission', label: 'Your mission (vague)', placeholder: 'e.g. empowering humans' },
       { id: 'investors', label: 'Impressive names to drop', placeholder: 'e.g. a16z, Sequoia' },
@@ -49,7 +51,7 @@ const templates = [
   {
     label: '"So proud of our team at..."',
     fields: [
-      { id: 'org', label: 'Your organization', placeholder: 'e.g. Acme Corp' },
+      { id: 'org', pool: 'orgs', label: 'Your organization', placeholder: 'e.g. Acme Corp' },
       { id: 'metric', label: 'Impressive metric', placeholder: 'e.g. 10x growth' },
       { id: 'timeframe', label: 'Timeframe', placeholder: 'e.g. Q3' },
       { id: 'secret', label: 'Your "secret"', placeholder: 'e.g. psychological safety' },
@@ -76,7 +78,7 @@ const templates = [
   {
     label: '"Exciting news!..."',
     fields: [
-      { id: 'org', label: 'Organization', placeholder: 'e.g. Acme Federal Solutions LLC' },
+      { id: 'org', pool: 'orgs', label: 'Organization', placeholder: 'e.g. Acme Federal Solutions LLC' },
       { id: 'contract', label: 'Lucrative contract', placeholder: 'e.g. a $50M IDIQ award' },
       { id: 'vehicles', label: 'Contract vehicles no one cares about', placeholder: 'e.g. OASIS+, Alliant 3, CIO-SP4' },
       { id: 'program', label: 'Award program', placeholder: 'e.g. governmentwide acquisition contract' },
@@ -87,11 +89,11 @@ const templates = [
   {
     label: '"I recently had the opportunity..."',
     fields: [
-      { id: 'myOrg', label: 'My organization', placeholder: 'e.g. Smith & Partners' },
-      { id: 'kissup', label: 'Name to kiss up to', placeholder: 'e.g. Jane Doe' },
+      { id: 'myOrg', pool: 'orgs', label: 'My organization', placeholder: 'e.g. Smith & Partners' },
+      { id: 'kissup', pool: 'people', label: 'Name to kiss up to', placeholder: 'e.g. Jane Doe' },
       { id: 'kissupAdj', label: 'Adjective to describe them', placeholder: 'e.g. visionary' },
       { id: 'timeframe', label: 'Timeframe', placeholder: 'e.g. the last three years' },
-      { id: 'org', label: 'Their organization', placeholder: 'e.g. Y Combinator' },
+      { id: 'org', pool: 'orgs', label: 'Their organization', placeholder: 'e.g. Y Combinator' },
       { id: 'jargon', label: 'Business jargon insight', placeholder: 'e.g. velocity beats perfection' },
       { id: 'term1', label: 'Business term', placeholder: 'e.g. unit economics' },
       { id: 'term2', label: 'General business success term', placeholder: 'e.g. long-term vision' },
@@ -132,7 +134,7 @@ const templates = [
   {
     label: '"I got let go last month..."',
     fields: [
-      { id: 'org', label: 'Company you got let go from', placeholder: 'e.g. Meridian Digital' },
+      { id: 'org', pool: 'orgs', label: 'Company you got let go from', placeholder: 'e.g. Meridian Digital' },
       { id: 'timeframe', label: 'Timeframe', placeholder: 'e.g. last month' },
       { id: 'excuse', label: 'The corporate euphemism for why', placeholder: 'e.g. a restructuring' },
       { id: 'lesson', label: "The lesson you 'learned'", placeholder: 'e.g. hustle culture was quietly killing me' },
@@ -155,7 +157,7 @@ const templates = [
     label: '"I don\'t hire for [skill]. I hire for..."',
     fields: [
       { id: 'skillNot', label: "The skill you claim not to hire for", placeholder: 'e.g. credentials' },
-      { id: 'qualityInstead', label: 'The vague quality you hire for instead', placeholder: 'e.g. grit' },
+      { id: 'qualityInstead', pool: 'qualities', label: 'The vague quality you hire for instead', placeholder: 'e.g. grit' },
       { id: 'example', label: 'A supporting anecdote', placeholder: 'e.g. the best engineer on my team never finished college' },
       { id: 'punchline', label: 'Closing hot take', placeholder: "e.g. talent doesn't care about your pedigree" },
     ],
@@ -165,11 +167,11 @@ const templates = [
     label: '"[N] years, [N] lessons"',
     fields: [
       { id: 'years', label: 'Number of years', placeholder: 'e.g. 10' },
-      { id: 'lesson1', label: 'Lesson 1', placeholder: 'e.g. consistency beats intensity' },
-      { id: 'lesson2', label: 'Lesson 2', placeholder: "e.g. say yes before you're ready" },
-      { id: 'lesson3', label: 'Lesson 3', placeholder: 'e.g. your network is your net worth' },
-      { id: 'lesson4', label: 'Lesson 4', placeholder: 'e.g. done is better than perfect' },
-      { id: 'lesson5', label: 'Lesson 5', placeholder: 'e.g. nobody is coming to save you' },
+      { id: 'lesson1', pool: 'lessons', label: 'Lesson 1', placeholder: 'e.g. consistency beats intensity' },
+      { id: 'lesson2', pool: 'lessons', label: 'Lesson 2', placeholder: "e.g. say yes before you're ready" },
+      { id: 'lesson3', pool: 'lessons', label: 'Lesson 3', placeholder: 'e.g. your network is your net worth' },
+      { id: 'lesson4', pool: 'lessons', label: 'Lesson 4', placeholder: 'e.g. done is better than perfect' },
+      { id: 'lesson5', pool: 'lessons', label: 'Lesson 5', placeholder: 'e.g. nobody is coming to save you' },
       { id: 'closingLine', label: 'Closing line', placeholder: 'e.g. Onward.' },
     ],
     render: (v) => `${v.years||'[N]'} years, ${v.years||'[N]'} lessons.\n\n1. ${v.lesson1||'[LESSON 1]'}\n2. ${v.lesson2||'[LESSON 2]'}\n3. ${v.lesson3||'[LESSON 3]'}\n4. ${v.lesson4||'[LESSON 4]'}\n5. ${v.lesson5||'[LESSON 5]'}\n\n${v.closingLine||'[CLOSING LINE]'}`
@@ -178,7 +180,7 @@ const templates = [
     label: '"I almost didn\'t send that message..."',
     fields: [
       { id: 'channel', label: 'How you nearly reached out', placeholder: 'e.g. a cold LinkedIn DM' },
-      { id: 'name', label: 'Who you reached out to', placeholder: 'e.g. Alex Chen' },
+      { id: 'name', pool: 'people', label: 'Who you reached out to', placeholder: 'e.g. Alex Chen' },
       { id: 'doubt', label: 'The hesitation', placeholder: "e.g. I told myself they'd never respond" },
       { id: 'networkOutcome', label: 'What happened next', placeholder: 'e.g. it turned into a mentorship that changed my career' },
       { id: 'moral', label: 'The moral', placeholder: 'e.g. send the message' },
@@ -188,7 +190,7 @@ const templates = [
   {
     label: '"Today, I am proud to announce..."',
     fields: [
-      { id: 'org', label: 'Company name', placeholder: 'e.g. JetStream' },
+      { id: 'org', pool: 'orgs', label: 'Company name', placeholder: 'e.g. JetStream' },
       { id: 'product', label: 'Product / platform name', placeholder: 'e.g. Security-first AI Governance Platform (SAIG)' },
       { id: 'certification', label: 'Certification achieved', placeholder: 'e.g. FedRAMP High certification' },
       { id: 'certDesc', label: 'Why the certification matters', placeholder: 'e.g. one of the most rigorous publicly available third-party baselines for cloud services' },
@@ -212,7 +214,7 @@ const templates = [
     label: '"My kid taught me more than any MBA..."',
     fields: [
       { id: 'childWho', label: 'The child / person', placeholder: 'e.g. 8-year-old' },
-      { id: 'childAct', label: 'Mundane thing they did', placeholder: 'e.g. refused to put on their shoes' },
+      { id: 'childAct', pool: 'tinyActs', label: 'Mundane thing they did', placeholder: 'e.g. refused to put on their shoes' },
       { id: 'childInsight', label: 'Profound interpretation', placeholder: "e.g. this wasn't stubbornness. It was exclusion from the decision" },
       { id: 'childPrinciple', label: 'Business principle', placeholder: 'e.g. why 70% of digital transformations fail' },
       { id: 'childMoral', label: 'Closing moral', placeholder: "e.g. Leadership isn't about getting people to put on their shoes. It's about helping them understand why the shoes matter." },
@@ -224,8 +226,8 @@ const templates = [
     fields: [
       { id: 'flightTrouble', label: 'The inconvenience', placeholder: 'e.g. my flight was delayed 6 hours' },
       { id: 'flightPerson', label: 'Unlikely hero', placeholder: 'e.g. a gate agent named Dave' },
-      { id: 'flightAct', label: 'Tiny act', placeholder: 'e.g. handed out phone chargers' },
-      { id: 'flightBuzz', label: 'Business jargon', placeholder: 'e.g. radical ownership' },
+      { id: 'flightAct', pool: 'tinyActs', label: 'Tiny act', placeholder: 'e.g. handed out phone chargers' },
+      { id: 'flightBuzz', pool: 'buzzwords', label: 'Business jargon', placeholder: 'e.g. radical ownership' },
     ],
     render: (v) => `Yesterday ${v.flightTrouble||'[INCONVENIENCE]'}.\n\nEveryone at the gate was frustrated.\n\nThen ${v.flightPerson||'[PERSON]'} did something remarkable: ${v.flightAct||'[TINY ACT]'}.\n\nNo title. No authority. No playbook.\n\nJust ${v.flightBuzz||'[BUZZWORD]'}.\n\nIt reminded me that leadership isn't a position.\nIt's what you do when nobody has given you permission to lead.\n\nAirlines lose luggage.\nGreat leaders deliver clarity.`
   },
@@ -235,7 +237,7 @@ const templates = [
       { id: 'fireSuperlative', label: 'Employee superlative', placeholder: 'e.g. our top salesperson' },
       { id: 'fireMetric', label: 'Impressive metric', placeholder: 'e.g. beat quota by 140%' },
       { id: 'fireFlaw', label: 'Fatal flaw', placeholder: 'e.g. used Reply All' },
-      { id: 'fireValue', label: 'Violated company value', placeholder: 'e.g. radical humility' },
+      { id: 'fireValue', pool: 'qualities', label: 'Violated company value', placeholder: 'e.g. radical humility' },
     ],
     render: (v) => `I fired my best employee yesterday.\n\nThey were ${v.fireSuperlative||'[SUPERLATIVE]'}.\nThey ${v.fireMetric||'[METRIC]'}.\n\nEvery quarter. Without fail.\n\nBut they ${v.fireFlaw||'[FATAL FLAW]'}.\n\nAnd that violated one of our most important values: ${v.fireValue||'[COMPANY VALUE]'}.\n\nPerformance gets you a seat at the table.\nCharacter determines whether you stay there.\n\nCulture isn't what you put on the wall.\nIt's who you're willing to fire.`
   },
@@ -245,10 +247,10 @@ const templates = [
       { id: 'rejCredentials', label: 'Their credentials', placeholder: 'e.g. an MBA, 3 patents, and a TEDx talk' },
       { id: 'rejQuestion', label: 'Interview question', placeholder: 'e.g. What does ownership mean to you?' },
       { id: 'rejAnswer', label: 'The disqualifying answer', placeholder: 'e.g. I prefer to be told what to do' },
-      { id: 'rejVague', label: 'The vague quality you can\'t teach', placeholder: 'e.g. Humility' },
-      { id: 'rejQuality', label: 'Quality your eventual hire had twice of', placeholder: 'e.g. hunger' },
+      { id: 'rejVague', pool: 'qualities', label: 'The vague quality you can\'t teach', placeholder: 'e.g. Humility' },
+      { id: 'rejQuality', pool: 'qualities', label: 'Quality your eventual hire had twice of', placeholder: 'e.g. hunger' },
     ],
-    render: (v) => `Yesterday I interviewed someone with ${v.rejCredentials||'[CREDENTIALS]'}.\n\nOn paper, they were perfect.\n\nBut when I asked "${v.rejQuestion||'[INTERVIEW QUESTION]'}", they said:\n\n"${v.rejAnswer||'[BAD ANSWER]'}"\n\nI ended the interview 10 minutes later.\n\nBecause skills can be taught.\n${v.rejVague||'[VAGUE QUALITY]'} can't.\n\nWe didn't hire them.\n\nThree months later, we hired someone with half the experience and twice the ${v.rejQuality||'[QUALITY]'}.\n\nBest decision we ever made.`
+    render: (v) => `Yesterday I interviewed someone with ${v.rejCredentials||'[CREDENTIALS]'}.\n\nOn paper, they were perfect.\n\nBut when I asked "${v.rejQuestion||'[INTERVIEW QUESTION]'}", they said:\n\n"${v.rejAnswer||'[BAD ANSWER]'}"\n\nI ended the interview 10 minutes later.\n\nBecause skills can be taught.\n${cap(v.rejVague||'[VAGUE QUALITY]')} can't.\n\nWe didn't hire them.\n\nThree months later, we hired someone with half the experience and twice the ${v.rejQuality||'[QUALITY]'}.\n\nBest decision we ever made.`
   },
   {
     label: '"I stopped taking meetings before 10 AM."',
@@ -274,7 +276,7 @@ const templates = [
     fields: [
       { id: 'revAmount', label: 'Absurd amount', placeholder: 'e.g. $4.2M' },
       { id: 'revDemand', label: 'What the customer demanded', placeholder: 'e.g. asked for a discount' },
-      { id: 'revPrinciple', label: 'The principle you chose', placeholder: 'e.g. focus' },
+      { id: 'revPrinciple', pool: 'qualities', label: 'The principle you chose', placeholder: 'e.g. focus' },
     ],
     render: (v) => `Last quarter, we walked away from ${v.revAmount||'[AMOUNT]'} in revenue.\n\nNot because we couldn't deliver.\n\nBecause the customer ${v.revDemand||'[CUSTOMER DEMAND]'}.\n\nIt would have been easy to say yes.\n\nBut every yes is also a no to something else.\n\nWe chose ${v.revPrinciple||'[PRINCIPLE]'}.\n\nShort-term revenue is temporary.\nTrust compounds.`
   },
@@ -283,9 +285,9 @@ const templates = [
     fields: [
       { id: 'activity', label: 'Ridiculous activity', placeholder: 'e.g. smoking a brisket for 14 hours' },
       { id: 'actMoment', label: 'The specific moment', placeholder: 'e.g. hour nine' },
-      { id: 'actLesson1', label: 'Lesson 1', placeholder: 'e.g. Patience closes deals' },
-      { id: 'actLesson2', label: 'Lesson 2', placeholder: 'e.g. Nobody reads the instructions' },
-      { id: 'actLesson3', label: 'Lesson 3', placeholder: 'e.g. The champion matters more than the contract' },
+      { id: 'actLesson1', pool: 'salesLessons', label: 'Lesson 1', placeholder: 'e.g. Patience closes deals' },
+      { id: 'actLesson2', pool: 'salesLessons', label: 'Lesson 2', placeholder: 'e.g. Nobody reads the instructions' },
+      { id: 'actLesson3', pool: 'salesLessons', label: 'Lesson 3', placeholder: 'e.g. The champion matters more than the contract' },
       { id: 'actPunchline', label: 'Activity punchline', placeholder: 'e.g. Low and slow wins' },
     ],
     render: (v) => `I spent this weekend ${v.activity||'[ACTIVITY]'}.\n\nSomewhere around ${v.actMoment||'[SPECIFIC MOMENT]'}, it hit me:\n\nThis is exactly like B2B sales.\n\n${v.actLesson1||'[LESSON 1]'}.\n${v.actLesson2||'[LESSON 2]'}.\n${v.actLesson3||'[LESSON 3]'}.\n\nThe parallels are impossible to ignore.\n\n${v.actPunchline||'[PUNCHLINE]'}.\n\nSales is no different.`
@@ -295,4 +297,30 @@ const templates = [
 // Fields filled with a list of N-M picks instead of a single value: [min, max].
 const MULTI_PICK_FIELDS = { thankYouList: [3, 5] };
 
-if (typeof module !== 'undefined') module.exports = { templates, MULTI_PICK_FIELDS };
+// --- Shared by the site's "Create one for me" and the TRMNL endpoint ---
+const bankFor = (field, bank) => bank[field.pool || field.id];
+
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+function pickList(arr, min, max) {
+  const count = Math.floor(Math.random() * (max - min + 1)) + min;
+  const pool = [...arr];
+  const chosen = [];
+  for (let i = 0; i < count && pool.length; i++) {
+    chosen.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+  }
+  if (chosen.length === 1) return chosen[0];
+  return `${chosen.slice(0, -1).join(', ')}, and ${chosen[chosen.length - 1]}`;
+}
+
+// One value for `field` from `options`. `used` (a Set) collects drawn values so
+// fields sharing a pool don't repeat each other within a single post.
+function drawValue(field, options, used = new Set()) {
+  if (MULTI_PICK_FIELDS[field.id]) return pickList(options, ...MULTI_PICK_FIELDS[field.id]);
+  let value = pick(options);
+  for (let i = 0; i < 8 && used.has(value); i++) value = pick(options);
+  used.add(value);
+  return value;
+}
+
+if (typeof module !== 'undefined') module.exports = { templates, MULTI_PICK_FIELDS, bankFor, drawValue };

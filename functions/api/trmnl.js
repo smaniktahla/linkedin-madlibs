@@ -3,7 +3,7 @@
 // post server-side from the same templates.js + wordbank.js the site uses.
 // `max` caps the post length (chars) so it fits the 800x480 e-ink screen.
 import wordBank from '../../wordbank.js';
-import { templates, MULTI_PICK_FIELDS } from '../../templates.js';
+import { templates, bankFor, drawValue } from '../../templates.js';
 
 const SITE_URL = 'https://linkedinmadlibs.com';
 const DEFAULT_MAX = 600;
@@ -15,26 +15,14 @@ const FALLBACKS = { years: ['3', '5', '7', '10', '12', '15', '20'] };
 
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-function pickList(arr, min, max) {
-  const count = Math.floor(Math.random() * (max - min + 1)) + min;
-  const pool = [...arr];
-  const chosen = [];
-  for (let i = 0; i < count && pool.length; i++) {
-    chosen.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
-  }
-  if (chosen.length === 1) return chosen[0];
-  return `${chosen.slice(0, -1).join(', ')}, and ${chosen[chosen.length - 1]}`;
-}
-
 function generate() {
   const template = pick(templates);
   const values = {};
+  const used = new Set();
   for (const field of template.fields) {
-    const options = wordBank[field.id] || FALLBACKS[field.id];
+    const options = bankFor(field, wordBank) || FALLBACKS[field.id];
     if (!options) continue;
-    values[field.id] = MULTI_PICK_FIELDS[field.id]
-      ? pickList(options, ...MULTI_PICK_FIELDS[field.id])
-      : pick(options);
+    values[field.id] = drawValue(field, options, used);
   }
   return { label: template.label, text: template.render(values) };
 }

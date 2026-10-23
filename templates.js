@@ -185,7 +185,7 @@ const templates = [
       { id: 'networkOutcome', label: 'What happened next', placeholder: 'e.g. it turned into a mentorship that changed my career' },
       { id: 'moral', label: 'The moral', placeholder: 'e.g. send the message' },
     ],
-    render: (v) => `I almost didn't send that message.\n\nI'd drafted and deleted ${v.channel||'[CHANNEL]'} to ${v.name||'[NAME]'} probably five times. ${v.doubt||'[DOUBT]'}.\n\nI sent it anyway. ${v.networkOutcome||'[WHAT HAPPENED NEXT]'}.\n\nThe moral? ${v.moral||'[MORAL]'}`
+    render: (v) => `I almost didn't send that message.\n\nI'd drafted and deleted ${v.channel||'[CHANNEL]'} to ${v.name||'[NAME]'} probably five times. ${cap(v.doubt||'[DOUBT]')}.\n\nI sent it anyway. ${cap(v.networkOutcome||'[WHAT HAPPENED NEXT]')}.\n\nThe moral? ${v.moral||'[MORAL]'}`
   },
   {
     label: '"Today, I am proud to announce..."',

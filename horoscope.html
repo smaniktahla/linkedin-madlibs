@@ -67,6 +67,9 @@
     .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-bottom: 1.1rem; }
     .stat { background: rgba(255,255,255,.12); border-radius: 8px; padding: 8px 10px; font-size: .85rem; }
     .stat b { display: block; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; opacity: .7; font-weight: 700; }
+    .cats { margin-bottom: 1.1rem; font-size: .9rem; }
+    .cats p { padding: 6px 0; border-top: 1px solid rgba(255,255,255,.18); }
+    .cats b { display: inline-block; min-width: 4.5rem; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
     .actions { display: flex; gap: 8px; flex-wrap: wrap; }
     .actions button {
       font-family: inherit; font-size: .85rem; padding: 8px 14px; border-radius: 8px; cursor: pointer;
@@ -117,6 +120,12 @@
       <div class="stat"><b>Avoid today</b><span id="cAvoid"></span></div>
       <div class="stat"><b>Most compatible with</b><span id="cMatch"></span></div>
     </div>
+    <div class="cats">
+      <p><b>Love</b> <span id="cLove"></span></p>
+      <p><b>Career</b> <span id="cCareer"></span></p>
+      <p><b>Money</b> <span id="cMoney"></span></p>
+      <p><b>Health</b> <span id="cHealth"></span></p>
+    </div>
     <div class="actions">
       <button class="primary" id="reroll">Re-roll the cosmos</button>
       <button id="copy">Copy</button>
@@ -161,6 +170,10 @@
     adj: ['unreasonably', 'dangerously', 'suspiciously', 'aggressively', 'profoundly', 'weirdly', 'tragically', 'smugly', 'quietly', 'majestically'],
     feeling: ['confident', 'hungry', 'unhinged', 'misunderstood', 'on fire', 'delightfully petty', 'cosmically tired', 'ready to fight a goose', 'seen', 'a little feral'],
     money: ['A small windfall of $4.12', 'A refund you forgot about', 'A subscription you forgot to cancel', 'An unexpected Venmo request', 'Free guacamole', 'A coupon that expires today', 'A surprise fee'],
+    expect: ['a text back', 'a refund', 'an apology', 'a package that says delivered', 'a promotion', 'a callback', 'closure', 'a sign from the universe', 'your coffee order', 'a reply to your \u201Cno worries!\u201D email'],
+    arrive: ['finally show up, slightly damaged', 'arrive with no explanation', 'turn out to be spam', 'arrive in the wrong size', 'show up at the worst possible time', 'arrive, but only in your dreams'],
+    task: ['that email you have been avoiding', 'the paperwork pile', 'your junk drawer', 'a very long to-do list', 'the thing you said you would do in March', 'your 4,000 unread messages', 'a project nobody remembers assigning'],
+    tarot: ['The Tower (but for your inbox)', 'The Fool (you, specifically)', 'The Hanged Man (waiting on hold)', 'Three of Cups (free appetizers)', 'The Moon (it is just a Tuesday)', 'Death (a software update)'],
     mood: ['Smug', 'Feral', 'Mildly betrayed', 'Hangry', 'Dramatic', 'Chaotic neutral', 'Unbothered (lying)', 'Nostalgic for no reason', 'Sleepy but wired', 'Main character'],
     avoid: ['Reply-all', 'Eye contact with Greg', 'Making big decisions', 'Gas station sushi', 'Your ex’s Instagram', 'Group projects', 'Saying “quick question”', 'Anyone named Chad', 'Checking your bank app', 'The phrase “per my last email”']
   };
@@ -169,11 +182,19 @@
     '{planet} {planetDoing}, which means you will feel {adj} {feeling} around {event}. Blame your {trait} nature.',
     'Today you will {verb} {person} in {place}, and honestly, they deserve it. Your {trait} nature is trending upward.',
     'The stars warn that {person} will bring up {event}. Do not engage. Instead, hold {object} and breathe.',
-    'With {planet} {planetDoing}, you are going to run into {object} at {place}. Take it as a sign. It is not a sign, but take it anyway.',
+    '{planet} {planetDoing}, so you are going to run into {object} at {place}. Take it as a sign. It is not a sign, but take it anyway.',
     'You are {adj} {feeling} today, and everyone can tell. {money} is headed your way, but so is {event}.',
     'A wise cosmos once said: never {verb} {person} before noon. You will ignore this. You always do. That is the {trait} in you.',
     '{event} will test you. {person} will make it worse. Fortunately, {object} is on your side, and it is the only ally you need.',
-    'Romance: {adj} unlikely. Career: {adj} fine. Health: you know what you did. Meanwhile {planet} {planetDoing}.'
+    'Romance: {adj} unlikely. Career: {adj} fine. Health: you know what you did. Meanwhile {planet} {planetDoing}.',
+    'You may have been expecting {expect}, and today it could {arrive}. Delays are finished for the moment. This is not the day to {verb} {person}, however. Your {trait} nature is simply too strong.',
+    'This is the day to tackle {task}. Do it before {event} finds you. If {person} offers to help, say no and smile {adj}.',
+    'The Tarot pulled {tarot}. Balance is hard to find, but {planet} {planetDoing}, so you will have to find it in {object}.',
+    'A six-month cycle centered around {expect} concludes today. {planet} {planetDoing}. Keep that energy going, or at least keep it away from {person}.',
+    '{sign}, your sense of cooperation is too strong to waste on {event}. Someone will {verb} you, and you will take it {adj} well.',
+    'If you have {task}, today is the day. If you do not, invent one. {planet} {planetDoing}, and you are {adj} {feeling}.',
+    'Mercury has a few riddles for you this week. Riddle one: why is {object} in {place}? Riddle two: who is {person} really? Solve neither.',
+    'Something you have been avoiding at {place} is about to become a lot less avoidable. Wear comfortable shoes. {trait} people always regret the shoes.'
   ];
   var CLOSERS = [
     'Trust the process. Or do not. The process does not care.',
@@ -183,8 +204,18 @@
     'Your lucky time today is whenever the meeting ends.',
     'This reading expires at midnight, like most of your good ideas.',
     'Do not text them. We cannot stress this enough.',
-    'Everything will be fine, or it will be a story later.'
+    'Everything will be fine, or it will be a story later.',
+    'Read your rising sign for more. It will say the same thing, but sadder.',
+    'Now, keep that moderation going. Within reason. Do not overdo the moderation.',
+    'Tomorrow is a new day, and a new chance to ignore this advice.'
   ];
+
+  var CATS = {
+    love: ['{person} is thinking about you. Unfortunately it is not in a good way.', 'A {adj} promising conversation awaits, ideally near {object}.', 'Flirt with caution. Or with {person}. Both are bad ideas.', 'Your love life is like {object}: technically functional.'],
+    career: ['Your boss will say \u201Cquick sync?\u201D and mean it.', '{event} will go {adj} well, and nobody will notice.', 'Take credit for something small. Blame {person} for the rest.', 'A promotion is possible if you survive {event}.'],
+    money: ['{money} lands in your lap, then a bill takes it back.', 'Do not lend money to {person}. You know why.', 'Today the stars say buy {object}. They have been wrong before.', 'Your wallet feels {adj} light. This is normal.'],
+    health: ['Stretch. You know where.', 'Drink water. Not that kind of water.', 'Your body is {adj} {feeling}, and is asking for {object}.', 'Walk for ten minutes, or at least stand up dramatically.']
+  };
 
   // Small seeded RNG (mulberry32) so a sign gets one stable reading per day until re-rolled.
   function hash(s) {
@@ -213,6 +244,7 @@
     function fill(t) {
       return t.replace(/\{(\w+)\}/g, function (_, k) {
         if (k === 'trait') return sign.trait;
+        if (k === 'sign') return sign.n;
         return pick(BANK[k]);
       });
     }
@@ -227,7 +259,11 @@
       obj: pick(BANK.object),
       mood: pick(BANK.mood),
       avoid: pick(BANK.avoid),
-      match: match
+      match: match,
+      love: fill(pick(CATS.love)),
+      career: fill(pick(CATS.career)),
+      money: fill(pick(CATS.money)),
+      health: fill(pick(CATS.health))
     };
   }
 
@@ -246,6 +282,10 @@
     document.getElementById('cMood').textContent = last.mood;
     document.getElementById('cAvoid').textContent = last.avoid;
     document.getElementById('cMatch').textContent = last.match;
+    document.getElementById('cLove').textContent = last.love;
+    document.getElementById('cCareer').textContent = last.career;
+    document.getElementById('cMoney').textContent = last.money;
+    document.getElementById('cHealth').textContent = last.health;
     card.hidden = false;
     Array.prototype.forEach.call(grid.children, function (b) {
       b.classList.toggle('active', b.dataset.sign === current.n);

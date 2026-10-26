@@ -379,6 +379,7 @@
     document.getElementById('cMoney').textContent = last.money;
     document.getElementById('cHealth').textContent = last.health;
     card.hidden = false;
+    if (typeof prepImage === 'function') prepImage();
     Array.prototype.forEach.call(grid.children, function (b) {
       b.classList.toggle('active', b.dataset.sign === current.n);
     });
@@ -449,24 +450,44 @@
 
   function flash(btn, text, orig) { btn.textContent = text; setTimeout(function () { btn.textContent = orig; }, 1800); }
 
-  document.getElementById('copyImg').addEventListener('click', function () {
-    var btn = this;
-    renderImage().toBlob(function (blob) {
-      if (navigator.clipboard && window.ClipboardItem) {
-        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-          .then(function () { flash(btn, 'Image copied', 'Copy as image'); },
-                function () { flash(btn, 'Blocked: use Download', 'Copy as image'); });
-      } else flash(btn, 'Unsupported: use Download', 'Copy as image');
-    }, 'image/png');
+  // Pre-render so the click handlers below run synchronously inside the user gesture
+  // (mobile browsers reject clipboard/share calls made after an async toBlob).
+  var imgBlob = null;
+  function prepImage() {
+    imgBlob = null;
+    renderImage().toBlob(function (b) { imgBlob = b; }, 'image/png');
+  }
+  function imgFile() { return new File([imgBlob], 'horoscope-' + current.n.toLowerCase() + '.png', { type: 'image/png' }); }
+  function download() {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(imgBlob);
+    a.download = 'horoscope-' + current.n.toLowerCase() + '.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+  var canShareFiles = false;
+  try { canShareFiles = !!(navigator.canShare && navigator.canShare({ files: [new File(['x'], 'x.png', { type: 'image/png' })] })); } catch (e) {}
+  var copyImgBtn = document.getElementById('copyImg');
+  if (canShareFiles) copyImgBtn.textContent = 'Share image';
+
+  copyImgBtn.addEventListener('click', function () {
+    var btn = this, orig = btn.textContent;
+    if (!imgBlob) { prepImage(); flash(btn, 'One sec, try again', orig); return; }
+    if (canShareFiles) {
+      navigator.share({ files: [imgFile()], title: 'Horoscope Mad Libs', text: shareText() })
+        .catch(function (e) { if (e && e.name !== 'AbortError') { download(); flash(btn, 'Saved instead', orig); } });
+      return;
+    }
+    function fallback() { download(); flash(btn, 'Saved instead', orig); }
+    if (navigator.clipboard && window.ClipboardItem) {
+      try {
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': imgBlob })])
+          .then(function () { flash(btn, 'Image copied', orig); }, fallback);
+      } catch (e) { fallback(); }
+    } else fallback();
   });
   document.getElementById('dlImg').addEventListener('click', function () {
-    renderImage().toBlob(function (blob) {
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'horoscope-' + current.n.toLowerCase() + '.png';
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-    }, 'image/png');
+    if (imgBlob) download(); else renderImage().toBlob(function (b) { imgBlob = b; download(); }, 'image/png');
   });
 
   var SITE = 'https://linkedinmadlibs.com/horoscope';

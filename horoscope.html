@@ -80,6 +80,12 @@
     }
     .actions button:hover { background: rgba(255,255,255,.15); }
     .actions button.primary { background: #fff; color: var(--purple-700); font-weight: 600; border-color: #fff; }
+    .share { display: block; width: 100%; margin-top: 12px; font-family: inherit; font-size: .9rem; font-weight: 600; line-height: 1.35; padding: 12px 14px; border: 0; border-radius: 10px; background: #fff; color: var(--purple-700); cursor: pointer; }
+    .share:hover { background: var(--purple-50); }
+    .share-menu { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .share-menu[hidden] { display: none; }
+    .share-menu a, .share-menu button { font-family: inherit; font-size: .8rem; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; text-decoration: none; cursor: pointer; }
+    .share-menu a:hover, .share-menu button:hover { background: rgba(255,255,255,.15); }
     .disclaimer { margin-top: 1.5rem; font-size: .75rem; color: var(--gray-500); text-align: center; }
     footer { border-top: 1px solid var(--gray-200); padding: 1.5rem 1rem; text-align: center; font-size: .8rem; color: var(--gray-500); }
     footer a { margin: 0 .5rem; }
@@ -141,6 +147,15 @@
       <button id="copy">Copy text</button>
       <button id="copyImg">Copy as image</button>
       <button id="dlImg">Download image</button>
+    </div>
+    <button type="button" class="share" id="share">Send this to a friend who really believes in this shit and won&rsquo;t shut up about it &#128513;</button>
+    <div class="share-menu" id="shareMenu" hidden>
+      <a id="shX" target="_blank" rel="noopener">X</a>
+      <a id="shWa" target="_blank" rel="noopener">WhatsApp</a>
+      <a id="shFb" target="_blank" rel="noopener">Facebook</a>
+      <a id="shSms">Text</a>
+      <a id="shMail">Email</a>
+      <button type="button" id="shCopy">Copy link</button>
     </div>
   </div>
 
@@ -452,6 +467,33 @@
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
     }, 'image/png');
+  });
+
+  var SITE = 'https://linkedinmadlibs.com/horoscope';
+  function shareUrl() { return SITE + '#' + current.n.toLowerCase(); }
+  function shareText() {
+    var t = last.text.length > 200 ? last.text.slice(0, 197).replace(/\s+\S*$/, '') + '...' : last.text;
+    return current.g + ' ' + current.n + ' \u2013 ' + prettyDate() + ': ' + t;
+  }
+
+  document.getElementById('share').addEventListener('click', function () {
+    var url = shareUrl(), text = shareText();
+    if (navigator.share) {
+      navigator.share({ title: 'Horoscope Mad Libs', text: text, url: url }).catch(function () {});
+      return;
+    }
+    var q = encodeURIComponent;
+    document.getElementById('shX').href = 'https://twitter.com/intent/tweet?text=' + q(text) + '&url=' + q(url);
+    document.getElementById('shWa').href = 'https://wa.me/?text=' + q(text + ' ' + url);
+    document.getElementById('shFb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + q(url);
+    document.getElementById('shSms').href = 'sms:?&body=' + q(text + ' ' + url);
+    document.getElementById('shMail').href = 'mailto:?subject=' + q('Your horoscope, from the universe') + '&body=' + q(text + '\n\n' + url);
+    var m = document.getElementById('shareMenu');
+    m.hidden = !m.hidden;
+  });
+  document.getElementById('shCopy').addEventListener('click', function () {
+    var btn = this;
+    if (navigator.clipboard) navigator.clipboard.writeText(shareUrl()).then(function () { flash(btn, 'Copied', 'Copy link'); }, function () {});
   });
 
   var hash0 = (location.hash || '').slice(1).toLowerCase();

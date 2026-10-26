@@ -128,7 +128,9 @@
     </div>
     <div class="actions">
       <button class="primary" id="reroll">Re-roll the cosmos</button>
-      <button id="copy">Copy</button>
+      <button id="copy">Copy text</button>
+      <button id="copyImg">Copy as image</button>
+      <button id="dlImg">Download image</button>
     </div>
   </div>
 
@@ -194,6 +196,8 @@
     '{sign}, your sense of cooperation is too strong to waste on {event}. Someone will {verb} you, and you will take it {adj} well.',
     'If you have {task}, today is the day. If you do not, invent one. {planet} {planetDoing}, and you are {adj} {feeling}.',
     'Mercury has a few riddles for you this week. Riddle one: why is {object} in {place}? Riddle two: who is {person} really? Solve neither.',
+    'Practical thoughts may be the result of unconscious impulses brought to the surface by {event}. Old fears about {object} could be released, but do not dwell on them or you will reinforce them. Your imagination is flying high. You might focus it on {task}.',
+    'Your imagination is {adj} high today. You could find {object} especially appealing. Someone like {person} may notice, and {planet} {planetDoing}, so keep your {trait} side on a short leash.',
     'Something you have been avoiding at {place} is about to become a lot less avoidable. Wear comfortable shoes. {trait} people always regret the shoes.'
   ];
   var CLOSERS = [
@@ -233,10 +237,16 @@
     };
   }
 
+  function prettyDate() {
+    return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
   function todayKey() {
     var d = new Date();
     return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
   }
+
+  function cap(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
 
   function generate(sign, salt) {
     var r = rng(hash(sign.n + '|' + todayKey() + '|' + salt));
@@ -260,10 +270,10 @@
       mood: pick(BANK.mood),
       avoid: pick(BANK.avoid),
       match: match,
-      love: fill(pick(CATS.love)),
-      career: fill(pick(CATS.career)),
-      money: fill(pick(CATS.money)),
-      health: fill(pick(CATS.health))
+      love: cap(fill(pick(CATS.love))),
+      career: cap(fill(pick(CATS.career))),
+      money: cap(fill(pick(CATS.money))),
+      health: cap(fill(pick(CATS.health)))
     };
   }
 
@@ -275,7 +285,7 @@
     last = generate(current, salt);
     document.getElementById('cGlyph').textContent = current.g;
     document.getElementById('cSign').textContent = current.n;
-    document.getElementById('cDate').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
+    document.getElementById('cDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
     document.getElementById('cBody').textContent = last.text;
     document.getElementById('cNum').textContent = last.num;
     document.getElementById('cObj').textContent = last.obj;
@@ -308,9 +318,66 @@
   document.getElementById('reroll').addEventListener('click', function () { salt = Math.floor(Math.random() * 1e9); render(); });
   document.getElementById('copy').addEventListener('click', function () {
     var btn = this;
-    var msg = current.g + ' ' + current.n + ': ' + last.text + ' Lucky number: ' + last.num + '. Lucky object: ' + last.obj + '.';
-    function done() { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); }
+    var msg = current.g + ' ' + current.n + ' \u2013 ' + prettyDate() + ': ' + last.text + ' Lucky number: ' + last.num + '. Lucky object: ' + last.obj + '.';
+    function done() { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy text'; }, 1500); }
     if (navigator.clipboard) navigator.clipboard.writeText(msg).then(done, function () {});
+  });
+
+  function wrap(ctx, text, x, y, maxW, lh) {
+    var words = text.split(' '), line = '';
+    for (var i = 0; i < words.length; i++) {
+      var test = line ? line + ' ' + words[i] : words[i];
+      if (ctx.measureText(test).width > maxW && line) { ctx.fillText(line, x, y); line = words[i]; y += lh; }
+      else line = test;
+    }
+    if (line) { ctx.fillText(line, x, y); y += lh; }
+    return y;
+  }
+
+  function renderImage() {
+    var W = 1080, H = 1350, P = 80, font = '-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+    var c = document.createElement('canvas'); c.width = W; c.height = H;
+    var ctx = c.getContext('2d');
+    var g = ctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, '#2a2468'); g.addColorStop(.6, '#3D379A'); g.addColorStop(1, '#534AB7');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#fff'; ctx.textBaseline = 'alphabetic';
+    ctx.font = '700 84px ' + font; ctx.fillText(current.g + ' ' + current.n, P, 150);
+    ctx.globalAlpha = .75; ctx.font = '400 34px ' + font; ctx.fillText(prettyDate(), P, 205); ctx.globalAlpha = 1;
+    ctx.font = '400 42px ' + font;
+    var y = wrap(ctx, last.text, P, 310, W - P * 2, 62);
+    y += 30;
+    ctx.globalAlpha = .85; ctx.font = '400 34px ' + font;
+    [['Lucky number', last.num], ['Lucky object', last.obj], ['Mood', last.mood], ['Avoid today', last.avoid]].forEach(function (r) {
+      y = wrap(ctx, r[0] + ': ' + r[1], P, y, W - P * 2, 50);
+    });
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(P, H - 170, W - P * 2, 2);
+    ctx.fillStyle = '#fff'; ctx.font = '700 38px ' + font; ctx.fillText('linkedinmadlibs.com/horoscope', P, H - 105);
+    ctx.globalAlpha = .65; ctx.font = '400 26px ' + font; ctx.fillText('For entertainment only. Powered by vibes, not astronomy.', P, H - 60);
+    return c;
+  }
+
+  function flash(btn, text, orig) { btn.textContent = text; setTimeout(function () { btn.textContent = orig; }, 1800); }
+
+  document.getElementById('copyImg').addEventListener('click', function () {
+    var btn = this;
+    renderImage().toBlob(function (blob) {
+      if (navigator.clipboard && window.ClipboardItem) {
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+          .then(function () { flash(btn, 'Image copied', 'Copy as image'); },
+                function () { flash(btn, 'Blocked: use Download', 'Copy as image'); });
+      } else flash(btn, 'Unsupported: use Download', 'Copy as image');
+    }, 'image/png');
+  });
+  document.getElementById('dlImg').addEventListener('click', function () {
+    renderImage().toBlob(function (blob) {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'horoscope-' + current.n.toLowerCase() + '.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    }, 'image/png');
   });
 
   var hash0 = (location.hash || '').slice(1).toLowerCase();

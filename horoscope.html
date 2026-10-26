@@ -67,6 +67,9 @@
     .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-bottom: 1.1rem; }
     .stat { background: rgba(255,255,255,.12); border-radius: 8px; padding: 8px 10px; font-size: .85rem; }
     .stat b { display: block; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; opacity: .7; font-weight: 700; }
+    .periods { display: flex; gap: 6px; margin-bottom: 12px; }
+    .periods button { font-family: inherit; font-size: .85rem; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-700); cursor: pointer; }
+    .periods button.on { background: var(--purple-600); border-color: var(--purple-600); color: #fff; font-weight: 600; }
     .cats { margin-bottom: 1.1rem; font-size: .9rem; }
     .cats p { padding: 6px 0; border-top: 1px solid rgba(255,255,255,.18); }
     .cats b { display: inline-block; min-width: 4.5rem; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
@@ -105,6 +108,13 @@
 
   <div class="step-label">1. Pick your sign</div>
   <div class="sign-grid" id="signGrid"></div>
+
+  <div class="periods" id="periods" role="tablist">
+    <button type="button" data-p="today" class="on">Today</button>
+    <button type="button" data-p="tomorrow">Tomorrow</button>
+    <button type="button" data-p="week">This week</button>
+    <button type="button" data-p="month">This month</button>
+  </div>
 
   <div class="card" id="card" hidden aria-live="polite">
     <div class="card-head">
@@ -176,6 +186,12 @@
     arrive: ['finally show up, slightly damaged', 'arrive with no explanation', 'turn out to be spam', 'arrive in the wrong size', 'show up at the worst possible time', 'arrive, but only in your dreams'],
     task: ['that email you have been avoiding', 'the paperwork pile', 'your junk drawer', 'a very long to-do list', 'the thing you said you would do in March', 'your 4,000 unread messages', 'a project nobody remembers assigning'],
     tarot: ['The Tower (but for your inbox)', 'The Fool (you, specifically)', 'The Hanged Man (waiting on hold)', 'Three of Cups (free appetizers)', 'The Moon (it is just a Tuesday)', 'Death (a software update)'],
+    visitor: ['older gentleman', 'distant cousin', 'neighbor with a ladder', 'man selling gutters', 'retired person with opinions', 'delivery driver', 'friendly stranger', 'mysterious uncle'],
+    family: ['your family', 'your roommates', 'the in-laws', 'your coworkers', 'your group chat', 'the dog'],
+    activity: ['go do their own thing', 'run errands you were not invited to', 'get tacos without you', 'disappear into a hobby', 'attend an event nobody mentioned', 'stand outside and look at the sky'],
+    practical: ['the household budget', 'the junk drawer', 'your subscriptions', 'that one gutter', 'the thermostat treaty', 'the fridge science project', 'your passwords'],
+    dream: ['a career change', 'a tiny house', 'moving to Portugal', 'quitting everything to make candles', 'a bold new haircut', 'becoming a morning person'],
+    blurry: ['blurry', 'foggy', 'chaotic', 'loud', 'sticky', 'spicy'],
     mood: ['Smug', 'Feral', 'Mildly betrayed', 'Hangry', 'Dramatic', 'Chaotic neutral', 'Unbothered (lying)', 'Nostalgic for no reason', 'Sleepy but wired', 'Main character'],
     avoid: ['Reply-all', 'Eye contact with Greg', 'Making big decisions', 'Gas station sushi', 'Your ex’s Instagram', 'Group projects', 'Saying “quick question”', 'Anyone named Chad', 'Checking your bank app', 'The phrase “per my last email”']
   };
@@ -192,12 +208,14 @@
     'You may have been expecting {expect}, and today it could {arrive}. Delays are finished for the moment. This is not the day to {verb} {person}, however. Your {trait} nature is simply too strong.',
     'This is the day to tackle {task}. Do it before {event} finds you. If {person} offers to help, say no and smile {adj}.',
     'The Tarot pulled {tarot}. Balance is hard to find, but {planet} {planetDoing}, so you will have to find it in {object}.',
-    'A six-month cycle centered around {expect} concludes today. {planet} {planetDoing}. Keep that energy going, or at least keep it away from {person}.',
+    'A six-month cycle centered around {expect} concludes. {planet} {planetDoing}. Keep that energy going, or at least keep it away from {person}.',
     '{sign}, your sense of cooperation is too strong to waste on {event}. Someone will {verb} you, and you will take it {adj} well.',
     'If you have {task}, today is the day. If you do not, invent one. {planet} {planetDoing}, and you are {adj} {feeling}.',
-    'Mercury has a few riddles for you this week. Riddle one: why is {object} in {place}? Riddle two: who is {person} really? Solve neither.',
+    'Mercury has a few riddles for you. Riddle one: why is {object} in {place}? Riddle two: who is {person} really? Solve neither.',
     'Practical thoughts may be the result of unconscious impulses brought to the surface by {event}. Old fears about {object} could be released, but do not dwell on them or you will reinforce them. Your imagination is flying high. You might focus it on {task}.',
     'Your imagination is {adj} high today. You could find {object} especially appealing. Someone like {person} may notice, and {planet} {planetDoing}, so keep your {trait} side on a short leash.',
+    'An older {visitor} could contact you, possibly offering to help with {task}. {family} may have abandoned you for the day to {activity}. You will welcome the offer. Practical matters, such as {practical}, might need attention, so set aside some time.',
+    'Someone with a {visitor} energy shows up near {place}. They mean well. {planet} {planetDoing}, so accept help from {person} only if it comes with {object}.',
     'Something you have been avoiding at {place} is about to become a lot less avoidable. Wear comfortable shoes. {trait} people always regret the shoes.'
   ];
   var CLOSERS = [
@@ -205,14 +223,26 @@
     'Drink some water. The stars said so, and they have never been wrong about water.',
     'Tonight, eat something warm and make no promises.',
     'If anyone asks, you were never here.',
-    'Your lucky time today is whenever the meeting ends.',
+    'Your lucky time is whenever the meeting ends.',
     'This reading expires at midnight, like most of your good ideas.',
     'Do not text them. We cannot stress this enough.',
     'Everything will be fine, or it will be a story later.',
     'Read your rising sign for more. It will say the same thing, but sadder.',
     'Now, keep that moderation going. Within reason. Do not overdo the moderation.',
-    'Tomorrow is a new day, and a new chance to ignore this advice.'
+    'There is always another day to ignore this advice.'
   ];
+
+  var WEEK = [
+    'On the one hand, you are {feeling} about {task} and dreaming of {dream}. On the other, everything is too {blurry} on {day} and {day} to do anything about it. Share your feelings on {day}, when {person} would love to be asked for advice. {day} is a great day too, but {day} requires the utmost focus. You can do a million things at once, and it is a rare skill. {event} on {day} makes you feel like {object}.',
+    '{planet} {planetDoing}, so expect {event} around {day}. Avoid {person} until {day}. Money may {arrive} on {day}, and {family} will have opinions about {practical}. By {day} you will be {adj} {feeling}, and by the weekend you will have a story.',
+    'This week is about {dream}. {day} and {day} are too {blurry} for big decisions. {day} brings {expect}, which will {arrive}. Your {trait} side peaks on {day}. Try not to {verb} {person}.'
+  ];
+  var MONTH = [
+    'This month is about {dream}. The first week is {adj} {blurry}, so wait until the {mday} to make any big moves. {planet} {planetDoing} around the {mday}, and {family} will have opinions about {practical}. {expect} will {arrive} sometime near the {mday}. By month end you will be {adj} {feeling}, mostly because of {object}.',
+    'On the one hand, you are {feeling} about {task}. On the other, {event} is scheduled for the {mday}. Avoid {person} until the {mday}. Money is {adj} possible after the {mday}, and your {trait} side peaks on the {mday}. The last week brings {expect}, or at least a good story.',
+    'Mid-month, {planet} {planetDoing}, which makes the {mday} a poor day to {verb} {person}. Take a risk on {dream} around the {mday}, but not before you have dealt with {task}. A {visitor} may show up near the end of the month. Welcome them. They have {object}.'
+  ];
+  var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   var CATS = {
     love: ['{person} is thinking about you. Unfortunately it is not in a good way.', 'A {adj} promising conversation awaits, ideally near {object}.', 'Flirt with caution. Or with {person}. Both are bad ideas.', 'Your love life is like {object}: technically functional.'],
@@ -237,13 +267,36 @@
     };
   }
 
+  var period = 'today';
+  var FMT = { month: 'short', day: 'numeric', year: 'numeric' };
+
+  function dateFor(per) {
+    var d = new Date();
+    if (per === 'tomorrow') d.setDate(d.getDate() + 1);
+    return d;
+  }
+  function weekRange() {
+    var d = new Date(), off = (d.getDay() + 6) % 7;   // Monday start
+    var a = new Date(d); a.setDate(d.getDate() - off);
+    var b = new Date(a); b.setDate(a.getDate() + 6);
+    return [a, b];
+  }
   function prettyDate() {
-    return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    if (period === 'month') return new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    if (period === 'week') {
+      var r = weekRange();
+      return r[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' \u2013 ' + r[1].toLocaleDateString('en-US', FMT);
+    }
+    return dateFor(period).toLocaleDateString('en-US', FMT);
+  }
+  function longDate() {
+    return (period === 'week' || period === 'month') ? prettyDate() : dateFor(period).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
   }
 
   function todayKey() {
-    var d = new Date();
-    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    var d = period === 'week' ? weekRange()[0] : dateFor(period);
+    if (period === 'month') return 'month:' + d.getFullYear() + '-' + (d.getMonth() + 1);
+    return period + ':' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
   }
 
   function cap(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
@@ -251,16 +304,30 @@
   function generate(sign, salt) {
     var r = rng(hash(sign.n + '|' + todayKey() + '|' + salt));
     function pick(a) { return a[Math.floor(r() * a.length)]; }
+    function ord(n) { var v = n % 100; return n + (['th', 'st', 'nd', 'rd'][(v - 20) % 10] || ['th', 'st', 'nd', 'rd'][v] || 'th'); }
+    var mdays = [];
+    while (mdays.length < 6) { var md = 2 + Math.floor(r() * 27); if (mdays.indexOf(md) < 0) mdays.push(md); }
+    mdays.sort(function (a, b) { return a - b; });
+    var days = DAYS.slice();
+    for (var i = days.length - 1; i > 0; i--) { var j = Math.floor(r() * (i + 1)); var t = days[i]; days[i] = days[j]; days[j] = t; }
     function fill(t) {
       return t.replace(/\{(\w+)\}/g, function (_, k) {
         if (k === 'trait') return sign.trait;
         if (k === 'sign') return sign.n;
+        if (k === 'mday') return ord(mdays.length ? mdays.shift() : 15);
+        if (k === 'day') return days.length ? days.pop() : pick(DAYS);
         return pick(BANK[k]);
       });
     }
-    var tpl1 = pick(TEMPLATES), tpl2;
-    do { tpl2 = pick(TEMPLATES); } while (tpl2 === tpl1);
-    var text = [fill(tpl1), fill(tpl2), pick(CLOSERS)].join(' ')
+    var parts;
+    if (period === 'month') parts = [fill(pick(MONTH)), pick(CLOSERS)];
+    else if (period === 'week') parts = [fill(pick(WEEK)), pick(CLOSERS)];
+    else {
+      var tpl1 = pick(TEMPLATES), tpl2;
+      do { tpl2 = pick(TEMPLATES); } while (tpl2 === tpl1);
+      parts = [fill(tpl1), fill(tpl2), pick(CLOSERS)];
+    }
+    var text = parts.join(' ')
       .replace(/(^|[.!?] )([a-z])/g, function (_, p, c) { return p + c.toUpperCase(); });
     var match = pick(SIGNS.filter(function (s) { return s.n !== sign.n; })).n;
     return {
@@ -285,7 +352,7 @@
     last = generate(current, salt);
     document.getElementById('cGlyph').textContent = current.g;
     document.getElementById('cSign').textContent = current.n;
-    document.getElementById('cDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+    document.getElementById('cDate').textContent = longDate();
     document.getElementById('cBody').textContent = last.text;
     document.getElementById('cNum').textContent = last.num;
     document.getElementById('cObj').textContent = last.obj;
@@ -315,6 +382,13 @@
     grid.appendChild(b);
   });
 
+  document.getElementById('periods').addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('button') : null;
+    if (!b || !b.dataset.p) return;
+    period = b.dataset.p; salt = 0;
+    Array.prototype.forEach.call(this.children, function (x) { x.classList.toggle('on', x === b); });
+    if (current) render();
+  });
   document.getElementById('reroll').addEventListener('click', function () { salt = Math.floor(Math.random() * 1e9); render(); });
   document.getElementById('copy').addEventListener('click', function () {
     var btn = this;

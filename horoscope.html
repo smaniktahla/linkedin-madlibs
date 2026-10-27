@@ -169,6 +169,7 @@
   <a href="/privacy.html">Privacy</a>
 </footer>
 
+<script src="wordbank.js"></script>
 <script>
 (function () {
   var SIGNS = [
@@ -195,7 +196,7 @@
     event: ['shotgunning a can of Cheese Whiz', 'a strip tease by your first cousin', 'making the minimum payment on your credit card balance', 'cleaning up cat vomit at 3am', 'a Category 5 hurricane', 'a meeting that should have been an email', 'a surprise potluck', 'a low-stakes argument', 'a parking dispute', 'an awkward elevator ride', 'a group chat meltdown', 'an unexpected invoice', 'a sudden craving', 'a 40-minute voicemail', 'a mildly chaotic brunch', 'a software update'],
     place: ['the break room', 'a Target', 'the DMV', 'your own kitchen at 2am', 'a Wawa', 'the group chat', 'a parking garage', 'a Costco sample station', 'the passenger seat', 'a stranger’s wedding'],
     adj: ['ruthlessly', 'theatrically', 'passive-aggressively', 'wildly', 'sneakily', 'begrudgingly', 'spiritually', 'cosmically', 'financially', 'legally', 'ominously', 'gloriously', 'recklessly', 'mysteriously', 'defiantly', 'awkwardly', 'sheepishly', 'emotionally', 'judgmentally', 'alarmingly', 'inexplicably', 'stubbornly', 'deliciously', 'medically', 'ceremonially', 'euphorically', 'euphemistically', 'allegorically', 'sophisticatedly', 'bizarrely', 'unexpectedly', 'surprisingly', 'unreasonably', 'dangerously', 'suspiciously', 'aggressively', 'profoundly', 'weirdly', 'tragically', 'smugly', 'quietly', 'majestically'],
-    feeling: ['confident', 'hungry', 'unhinged', 'misunderstood', 'on fire', 'delightfully petty', 'cosmically tired', 'ready to fight a goose', 'seen', 'a little feral'],
+    feeling: ['confident', 'hungry', 'unhinged', 'misunderstood', 'on fire', 'delightfully petty', 'existentially tired', 'ready to fight a goose', 'seen', 'a little feral'],
     money: ['A small windfall of $4.12', 'A refund you forgot about', 'A subscription you forgot to cancel', 'An unexpected Venmo request', 'Free guacamole', 'A coupon that expires today', 'A surprise fee'],
     expect: ['a text back', 'a refund', 'an apology', 'a package that says delivered', 'a promotion', 'a callback', 'closure', 'a sign from the universe', 'your coffee order', 'a reply to your \u201Cno worries!\u201D email'],
     arrive: ['finally show up, slightly damaged', 'arrive with no explanation', 'turn out to be spam', 'arrive in the wrong size', 'show up at the worst possible time', 'arrive, but only in your dreams'],
@@ -358,6 +359,71 @@
       health: cap(fill(pick(CATS.health)))
     };
   }
+
+
+  var DAY_EXTRA = [
+    '{planet} {planetDoing}, which is terrible for your {buzz} strategy. Do not circle back with {person} before {event} happens.',
+    'Your {buzz} energy peaks today, but {event} could {arrive}. Pivot gently.',
+    'Someone will ask you to align on {buzz} strategy at {place}. Say yes, then do nothing. {planet} {planetDoing}.'
+  ];
+  var WEEK_EXTRA = 'This week your {buzz} strategy meets {person}. {day} is ideal for {task}, but {day} belongs to {event}. By {day}, you will have pivoted twice.';
+  var MONTH_EXTRA = 'This month your {buzz} energy is {adj} strong. Around the {mday}, {person} will ask you to circle back. Do it on the {mday}, not before. {planet} {planetDoing}.';
+
+  // ---- Borrow from the main LinkedIn Mad Libs word banks (wordbank.js) ----
+  // Loaded live, so additions to the main site flow in. Filtered to drop first-person
+  // lines, dark topics and real people, then capped so the original jokes still dominate.
+  (function importMainBanks() {
+    if (typeof wordBank === 'undefined') return;
+    var FIRST = /\b(I|I'm|I'd|I've|my|me|we|we're|our|us)\b/i;
+    var DARK = /shoot|drone|pileup|hydroplan|hooker|blow|compound|bird strike|peace negotiat|cancer|DUI|kiss|bender|crashed|\bsad\b|\bmom\b|body|ghost|death|dying|\bdie\b/i;
+    var REAL = /Nadella|Huang|Buffett|Kash|Musk|Altman|Andreessen|Sandberg|Vaynerchuk|Gelsinger|Chesky|Huffington|Ferriss|Sinek|Brené|Welch/i;
+    function clean(a) {
+      return (a || []).filter(function (x) {
+        return typeof x === 'string' && x.length <= 70 && !FIRST.test(x) && !DARK.test(x) && !REAL.test(x);
+      });
+    }
+    var sr = rng(hash('horoscope-import'));
+    function shuffle(a) {
+      a = a.slice();
+      for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(sr() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+      return a;
+    }
+    function uniq(a) { var seen = {}; return a.filter(function (x) { var k = x.toLowerCase(); return seen[k] ? false : (seen[k] = 1); }); }
+    function add(name, items, cap) {
+      var base = BANK[name] || [];
+      var extra = shuffle(uniq(items)).slice(0, cap === undefined ? Math.max(12, base.length) : cap);
+      BANK[name] = uniq(base.concat(extra));
+    }
+    function an(w) { return (/^[aeiou]/i.test(w) ? 'an ' : 'a ') + w; }
+    function lc(w) { return /^[A-Z][a-z]+$/.test(w.split(' ')[0]) && !/[A-Z]/.test(w.slice(1)) ? w.charAt(0).toLowerCase() + w.slice(1) : w; }
+    function endp(t) { t = t.replace(/\s+$/, ''); t = /[.?!]$/.test(t) ? t : t + '.'; return t.charAt(0).toUpperCase() + t.slice(1); }
+
+    var noWhen = function (x) { return !/^(when|the moment)\b/i.test(x); };
+    add('event', clean(wordBank.event).concat(clean(wordBank.activity), clean(wordBank.actMoment).filter(noWhen), clean(wordBank.habit)));
+    add('person', clean(wordBank.flightPerson).concat(clean(wordBank.people), clean(wordBank.role).map(an)));
+    add('place', clean(wordBank.fancyPlace));
+    add('dream', clean(wordBank.trait));
+    add('practical', clean(wordBank.trait).concat(clean(wordBank.excuse)));
+    add('expect', clean(wordBank.qualities).filter(function (x) { return !/^(always|show up|one team|someone|collaboration over|integrity first|the long game)/i.test(x); }).map(lc));
+
+    var buzz = clean(wordBank.buzzwords).filter(function (x) {
+      return x.split(' ').length <= 3 && !/^\w+\s+(the|your|this|that|these|those|my|our|up|out|off)\b/i.test(x) && !/^(to|ping|loop)\b/i.test(x);
+    });
+    if (buzz.length) {
+      add('buzz', buzz, 80);
+      add('avoid', buzz.map(function (x) { return x + ' energy'; }));
+      DAY_EXTRA.forEach(function (t) { TEMPLATES.push(t); });
+      WEEK.push(WEEK_EXTRA); MONTH.push(MONTH_EXTRA);
+    }
+
+    // Closers: leadership-post wisdom, takeaways and CTAs, capped so originals still lead.
+    var wisdom = shuffle(uniq(clean(wordBank.lessons).concat(clean(wordBank.jargon)))).slice(0, 10);
+    var take = shuffle(uniq(clean(wordBank.takeaway))).slice(0, 6);
+    var cta = shuffle(uniq(clean(wordBank.cta))).slice(0, 6);
+    wisdom.forEach(function (w) { CLOSERS.push('Cosmic leadership tip: ' + endp(w)); });
+    take.forEach(function (w) { CLOSERS.push('Key takeaway: ' + endp(w)); });
+    cta.forEach(function (w) { CLOSERS.push('Cosmic CTA: ' + endp(w)); });
+  })();
 
   var grid = document.getElementById('signGrid');
   var card = document.getElementById('card');
